@@ -1,0 +1,41 @@
+.main {
+  @apply bg-white
+    p-2
+    rounded
+    flex
+    flex-row
+    gap-2
+    w-[400px]
+    overflow-hidden
+    justify-between;
+}
+
+.selectionBox {
+  @apply flex
+    items-center
+    w-full
+    justify-between;
+}
+
+.arrow {
+  @apply bg-blue-500
+    p-1
+    cursor-pointer
+    hover:bg-blue-400
+    ease-in-out
+    transition-colors
+    text-white
+    rounded;
+}
+
+.button {
+  @apply bg-blue-500
+    py-1
+    px-4
+    cursor-pointer
+    hover:bg-blue-400
+    ease-in-out
+    transition-colors
+    text-white
+    rounded;
+}
