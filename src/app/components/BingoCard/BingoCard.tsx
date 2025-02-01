@@ -12,7 +12,7 @@ export const BingoCard = ({ items }: BingoCardProps) => {
     <div className={styles.main}>
       <div className="grid grid-cols-5 w-fit">
         {updatedItems.map((item, index) => (
-          <BingoButton key={index} label={item} />
+          <BingoButton key={index} label={item} isFree={item === "FREE"} />
         ))}
       </div>
     </div>

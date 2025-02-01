@@ -1,0 +1,84 @@
+.opacityBackground {
+  @apply absolute
+    inset-0
+    flex
+    items-center
+    justify-center
+    bg-black
+    bg-opacity-30
+    z-50;
+}
+
+.main {
+  @apply bg-lime-300
+    p-8
+    flex
+    flex-col
+    items-center
+    justify-center
+    gap-4
+    rounded-lg
+    shadow-lg
+    w-[400px]
+    text-center;
+}
+
+.closeButton {
+  @apply self-end
+    transition-colors
+    ease-in-out
+    px-1.5
+    rounded
+    bg-white
+    text-black
+    hover:bg-black
+    hover:text-lime-300;
+}
+
+.form {
+  @apply flex
+    items-end
+    justify-end
+    flex-col
+    gap-2;
+}
+
+.label {
+  @apply p-1
+    flex
+    gap-2
+    items-center;
+}
+
+.input {
+  @apply border
+    border-black
+    rounded
+    p-1;
+}
+
+.submit {
+  @apply bg-blue-500
+    py-1
+    px-4
+    cursor-pointer
+    enabled:hover:bg-blue-400
+    ease-in-out
+    transition-colors
+    text-white
+    rounded;
+}
+
+.required {
+  @apply text-red-600
+    ml-1;
+}
+
+.error {
+  @apply text-red-600;
+}
+
+.disabled {
+  @apply bg-slate-500
+    cursor-not-allowed;
+}

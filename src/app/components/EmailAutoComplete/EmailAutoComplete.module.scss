@@ -1,0 +1,45 @@
+.label {
+  @apply p-1
+    flex
+    gap-2
+    items-center;
+}
+
+.wrapper {
+  @apply relative
+    w-full
+    max-w-full
+    text-gray-600;
+}
+
+.input {
+  @apply border
+    border-black
+    rounded
+    p-1;
+}
+
+.dropdown {
+  @apply absolute
+    w-full
+    bg-white
+    shadow-md
+    z-50
+    list-none
+    mt-0
+    mb-0;
+}
+
+.suggestion {
+  @apply p-2
+    cursor-pointer
+    hover:bg-gray-100
+    focus:bg-gray-100
+    focus:outline-none;
+}
+
+.domain {
+  @apply font-semibold
+    text-blue-600
+    ml-1;
+}

@@ -13,9 +13,12 @@ export default function Home() {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-start justify-center h-screen">
       {submitted ? (
-        <BingoCard items={bingoItems} />
+        <div className="flex flex-col gap-24 text-center pt-12">
+          <h2>Networking Bingo</h2>
+          <BingoCard items={bingoItems} />
+        </div>
       ) : (
         <BingoCardCreationForm onSubmit={handleSubmit} />
       )}

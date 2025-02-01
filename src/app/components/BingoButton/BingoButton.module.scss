@@ -8,3 +8,8 @@
     items-center
     justify-center;
 }
+
+.completed {
+  @apply bg-black
+    text-white;
+}
