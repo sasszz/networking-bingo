@@ -2,6 +2,8 @@ export * from "./BingoButton";
 export * from "./BingoButtonModal";
 export * from "./BingoCard";
 export * from "./BingoCardCreationForm";
+export * from "./BingoGameCreationForm";
 export * from "./EmailAutoComplete";
 export * from "./GameCode";
+export * from "./MiniBingoCard";
 export * from "./SuggestionButton";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BingoCard, BingoCardCreationForm } from "@/components";
+import { BingoCard, BingoCardCreationForm, BingoGameCreationForm } from "@/components";
 
 export default function Admin() {
   const [bingoItems, setBingoItems] = useState<string[]>([]);
@@ -22,7 +22,10 @@ export default function Admin() {
           <BingoCard items={bingoItems} />
         </div>
       ) : (
-        <BingoCardCreationForm onSubmit={handleSubmit} />
+        <div className="flex flex-row">
+          <BingoGameCreationForm />
+          <BingoCardCreationForm onSubmit={handleSubmit} />
+        </div>
       )}
     </div>
   );

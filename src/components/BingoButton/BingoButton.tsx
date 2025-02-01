@@ -5,11 +5,18 @@ import { BingoButtonModal } from "../BingoButtonModal";
 interface BingoButtonProps {
   label: string;
   isFree: boolean;
+  isChecked: boolean;
+  onClick: () => void;
 }
 
-export const BingoButton = ({ label, isFree }: BingoButtonProps) => {
+export const BingoButton = ({
+  label,
+  isFree,
+  isChecked,
+  onClick,
+}: BingoButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(isChecked);
 
   return (
     <>
@@ -26,7 +33,10 @@ export const BingoButton = ({ label, isFree }: BingoButtonProps) => {
         <BingoButtonModal
           label={label}
           onClose={() => setIsOpen(false)}
-          onSuccess={() => setIsSubmitted(true)} // Update state on success
+          onSuccess={() => {
+            setIsSubmitted(true);
+            onClick();
+          }}
         />
       )}
     </>
