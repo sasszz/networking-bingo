@@ -66,7 +66,7 @@ export const BingoButtonModal = ({
             className={`${styles.submit} ${error ? styles.disabled : ""}`}
             type="submit"
             value="Submit"
-            disabled={error} // Disable submit button if email is empty
+            disabled={error}
           />
         </form>
       </div>
