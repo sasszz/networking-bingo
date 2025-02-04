@@ -15,7 +15,7 @@ export default function Home() {
         <Link href="/admin" className={styles.button}>
           <button>View Past Games</button>
         </Link>
-        <Link href="/admin/live-games" className={styles.button}>
+        <Link href="/admin/live-games/leaderboard" className={styles.button}>
           <button>View Live Games</button>
         </Link>
       </div>
