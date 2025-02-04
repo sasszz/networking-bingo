@@ -1,43 +1,44 @@
+const allLines: [number, number][][] = [
+  // Horizontal lines
+  ...Array.from({ length: 5 }, (_, i) => Array.from({ length: 5 }, (_, j) => [i, j] as [number, number])),
+  // Vertical lines
+  ...Array.from({ length: 5 }, (_, j) => Array.from({ length: 5 }, (_, i) => [i, j] as [number, number])),
+  // Diagonal lines
+  [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]],
+  [[0, 4], [1, 3], [2, 2], [3, 1], [4, 0]],
+];
+
+const blackoutPattern: [number, number][][] = [
+  Array.from({ length: 5 }, (_, x) =>
+    Array.from({ length: 5 }, (_, y) => [x, y] as [number, number])
+  ).flat(),
+];
+
+const windowPattern: [number, number][][] = [
+  [
+    [0, 0], [0, 1], [0, 2], [0, 3], [0, 4],
+    [4, 0], [4, 1], [4, 2], [4, 3], [4, 4],
+    [1, 0], [2, 0], [3, 0],
+    [1, 4], [2, 4], [3, 4],
+  ],
+];
+
+const getCombinations = (numLines: number): [number, number][][] => 
+  allLines.flatMap((line, i) =>
+    allLines.slice(i + 1).flatMap((line2, j) =>
+      numLines === 2
+        ? [[[...line], [...line2]]]
+        : allLines.slice(i + j + 2).map(line3 => [[...line], [...line2], [...line3]])
+    )
+  ).flat();
+
 export const winningPatterns: Record<
   "one-line" | "two-line" | "three-line" | "window" | "blackout",
-  Set<string>[]
+  [number, number][][]
 > = {
-  "one-line": [
-    // Horizontal lines
-    new Set(["0,0", "0,1", "0,2", "0,3", "0,4"]),
-    new Set(["1,0", "1,1", "1,2", "1,3", "1,4"]),
-    new Set(["2,0", "2,1", "2,2", "2,3", "2,4"]),
-    new Set(["3,0", "3,1", "3,2", "3,3", "3,4"]),
-    new Set(["4,0", "4,1", "4,2", "4,3", "4,4"]),
-    // Vertical lines
-    new Set(["0,0", "1,0", "2,0", "3,0", "4,0"]),
-    new Set(["0,1", "1,1", "2,1", "3,1", "4,1"]),
-    new Set(["0,2", "1,2", "2,2", "3,2", "4,2"]),
-    new Set(["0,3", "1,3", "2,3", "3,3", "4,3"]),
-    new Set(["0,4", "1,4", "2,4", "3,4", "4,4"]),
-    // Diagonal lines
-    new Set(["0,0", "1,1", "2,2", "3,3", "4,4"]),
-    new Set(["0,4", "1,3", "2,2", "3,1", "4,0"]),
-  ],
-  "two-line": [
-    new Set([...["0,0", "1,1", "2,2", "3,3", "4,4"], ...["0,4", "1,3", "2,2", "3,1", "4,0"]]), // Two diagonals
-    new Set([...["0,0", "0,1", "0,2", "0,3", "0,4"], ...["1,0", "1,1", "1,2", "1,3", "1,4"]]), // Two horizontal
-  ],
-  "three-line": [
-    new Set([
-      ...["0,0", "1,1", "2,2", "3,3", "4,4"],
-      ...["0,4", "1,3", "2,2", "3,1", "4,0"],
-      ...["2,0", "2,1", "2,2", "2,3", "2,4"],
-    ]),
-  ],
-  "window": [
-    new Set([
-      "0,0", "0,1", "0,2", "0,3", "0,4",
-      "4,0", "4,1", "4,2", "4,3", "4,4",
-      "1,0", "2,0", "3,0", "1,4", "2,4", "3,4",
-    ]),
-  ],
-  "blackout": [
-    new Set(Array.from({ length: 25 }, (_, i) => `${Math.floor(i / 5)},${i % 5}`)),
-  ],
+  "one-line": allLines,
+  "two-line": getCombinations(2),
+  "three-line": getCombinations(3),
+  "window": windowPattern,
+  "blackout": blackoutPattern,
 };

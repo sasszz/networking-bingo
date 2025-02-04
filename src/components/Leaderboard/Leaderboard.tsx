@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { MiniBingoCard } from "../MiniBingoCard";
-import { getLeaderboard } from "./calculate-leaderboard";
+import { calculateProgress } from "./calculate-progress";
+import { sortPlayers } from "./sort-players";
 import { Game } from "./game-data";
 
 interface LeaderboardProps {
@@ -18,7 +19,15 @@ export const Leaderboard = ({ gameData }: LeaderboardProps) => {
 
   if (!game) return <div>Loading game data...</div>;
 
-  const sortedPlayers = getLeaderboard(game);
+  const playersWithProgress = game.players.map((player) => {
+    const { tilesNeeded, completedAt } = calculateProgress(
+      player,
+      game.winningType
+    );
+    return { ...player, tilesNeeded, completedAt };
+  });
+
+  const sortedPlayers = sortPlayers(playersWithProgress);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -37,12 +46,16 @@ export const Leaderboard = ({ gameData }: LeaderboardProps) => {
             <span className="font-semibold">
               {player.name}{" "}
               {player.completedAt
-                ? `(Completed at ${new Date(player.completedAt).toLocaleTimeString()})`
-                : `(Progress: ${player.progress})`}
+                ? `(Completed at ${new Date(
+                    player.completedAt
+                  ).toLocaleTimeString()})`
+                : `(Tiles needed: ${player.tilesNeeded})`}
             </span>
             <MiniBingoCard
               type={game.winningType}
-              filledCoordinates={player.filledCoordinates.map(({ coord }) => coord)}
+              filledCoordinates={player.filledCoordinates.map(
+                ({ coord }) => coord
+              )}
             />
           </div>
         ))}

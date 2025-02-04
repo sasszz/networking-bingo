@@ -1,30 +1,42 @@
 import { Game, Player } from "./game-data";
 import { winningPatterns } from "./winning-patterns";
 
-export const calculateProgress = (player: Player, winningType: Game["winningType"]) => {
-  const gridSize = 5;
-  const filledSet = new Set(player.filledCoordinates.map(({ coord }) => `${coord[0]},${coord[1]}`));
-
-  const requiredPatterns: [number, number][][] = winningPatterns[winningType].map(pattern =>
-    Array.from(pattern).map(coordStr => {
-      const [x, y] = coordStr.split(",").map(Number);
-      return [x, y] as [number, number];
-    })
+export const calculateProgress = (
+  player: Player,
+  winningType: Game["winningType"]
+) => {
+  const filledSet = new Set(
+    player.filledCoordinates.map(({ coord }) => `${coord[0]},${coord[1]}`)
   );
 
+  const requiredPatterns: [number, number][][] = winningPatterns[winningType];
+
+  let minTilesNeeded = Infinity;
+  let latestTime: string | null = null;
+
   for (const pattern of requiredPatterns) {
-    const isWinning = pattern.every(([x, y]) => filledSet.has(`${x},${y}`));
+    const missingTiles = pattern.filter(
+      ([x, y]) => !filledSet.has(`${x},${y}`)
+    );
 
-    if (isWinning) {
-      const latestTime = pattern
-        .map(([x, y]) => player.filledCoordinates.find(({ coord }) => coord[0] === x && coord[1] === y)?.time || "")
-        .filter(Boolean)
-        .sort()
-        .pop();
+    if (missingTiles.length === 0) {
+      latestTime =
+        pattern
+          .map(
+            ([x, y]) =>
+              player.filledCoordinates.find(
+                ({ coord }) => coord[0] === x && coord[1] === y
+              )?.time || ""
+          )
+          .filter(Boolean)
+          .sort()
+          .pop() || null;
 
-      return { progress: 100, completedAt: latestTime };
+      return { tilesNeeded: 0, completedAt: latestTime };
     }
+
+    minTilesNeeded = Math.min(minTilesNeeded, missingTiles.length);
   }
 
-  return { progress: (filledSet.size / (gridSize * gridSize)) * 100, completedAt: null };
+  return { tilesNeeded: minTilesNeeded, completedAt: null };
 };
