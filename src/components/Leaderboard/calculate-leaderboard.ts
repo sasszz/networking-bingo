@@ -24,13 +24,15 @@ export const getLeaderboard = (game: Game) => {
 
       for (const pattern of winningSets) {
         const matchedCount = [...pattern].filter((coord) =>
-          playerCoords.has(coord)
+          playerCoords.has(coord.join(","))
         ).length;
         bestProgress = Math.max(bestProgress, matchedCount);
 
-        if (matchedCount === pattern.size) {
+        if (matchedCount === pattern.length) {
           const latestTime = player.filledCoordinates
-            .filter(({ coord }) => pattern.has(coord.join(",")))
+            .filter(({ coord }) =>
+              pattern.some((p) => p.join(",") === coord.join(","))
+            )
             .map(({ time }) => time)
             .sort()
             .at(-1);
