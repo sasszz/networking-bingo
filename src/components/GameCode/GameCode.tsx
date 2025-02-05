@@ -35,7 +35,7 @@ export const GameCode = () => {
               setCode(value);
               if (value.trim()) setError(false);
             }}
-            placeholder="Enter something..."
+            placeholder="Enter code..."
           />
         </label>
         <input

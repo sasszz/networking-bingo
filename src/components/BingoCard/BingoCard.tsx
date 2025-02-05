@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { BingoButton } from "../BingoButton";
 import styles from "./BingoCard.module.scss";
+import { ShareGameModal } from "../ShareGameModal";
+import Link from "next/link";
 
 interface BingoCardProps {
   items: string[];
@@ -14,7 +16,7 @@ export const BingoCard = ({ items }: BingoCardProps) => {
   const toggleSquare = (index: number) => {
     setChecked((prev) => {
       const newChecked = [...prev];
-      newChecked[index] = true; // Mark square as checked
+      newChecked[index] = true;
       return newChecked;
     });
   };
@@ -49,6 +51,12 @@ export const BingoCard = ({ items }: BingoCardProps) => {
             onClick={() => toggleSquare(index)}
           />
         ))}
+      </div>
+      <div className="p-4 bg-slate-300 rounded flex flex-col gap-4">
+        <ShareGameModal />
+        <Link href="/admin/live-games/leaderboard/1">
+          <button className={styles.submit}>View Leaderboard</button>
+        </Link>
       </div>
       {checkForBingo() && <p className="text-green-500 mt-2">BINGO!</p>}
     </div>
