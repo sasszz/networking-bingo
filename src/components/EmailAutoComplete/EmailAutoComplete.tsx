@@ -5,11 +5,13 @@ import styles from "./EmailAutoComplete.module.scss";
 interface EmailAutoCompleteProps {
   value: string;
   onChange: (value: string) => void;
+  disabled: boolean;
 }
 
 export const EmailAutoComplete = ({
   value,
   onChange,
+  disabled,
 }: EmailAutoCompleteProps) => {
   const baseList = [
     "gmail.com",
@@ -34,6 +36,7 @@ export const EmailAutoComplete = ({
       refineList={domains}
       value={value}
       onChange={onChange}
+      disabled={disabled}
     />
   );
 };

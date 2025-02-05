@@ -24,7 +24,7 @@ export const BingoButton = ({
         className={`${styles.main} ${
           isSubmitted || isFree ? styles.completed : ""
         }`}
-        onClick={() => (isFree || isSubmitted ? null : setIsOpen(true))}
+        onClick={() => (isFree ? null : setIsOpen(true))}
       >
         {label}
       </button>

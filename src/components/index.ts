@@ -6,6 +6,7 @@ export * from "./BingoGameCreationForm";
 export * from "./CopyButton";
 export * from "./EmailAutoComplete";
 export * from "./GameCode";
+export * from "./LinkedInButton";
 export * from "./MiniBingoCard";
 export * from "./ShareGameModal";
 export * from "./SuggestionButton";
