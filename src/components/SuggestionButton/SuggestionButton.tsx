@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SuggestionButton.module.scss";
+import Image from "next/image";
+import Next from "../../../public/next.svg";
 import { Button } from "../Button";
 
 interface SuggestionButtonProps {
@@ -44,10 +46,8 @@ export const SuggestionButton = ({
   ]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % suggestions.length);
-  };
+  const [isPrevPressed, setIsPrevPressed] = useState(false);
+  const [isNextPressed, setIsNextPressed] = useState(false);
 
   const handlePrev = () => {
     setCurrentIndex(
@@ -55,31 +55,65 @@ export const SuggestionButton = ({
     );
   };
 
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % suggestions.length);
+  };
+
   const handleUseSuggestion = () => {
     const selectedSuggestion = suggestions[currentIndex];
-    onUseSuggestion(selectedSuggestion); // Send suggestion to input field
-    setSuggestions(suggestions.filter((_, i) => i !== currentIndex)); // Remove used suggestion
-    setCurrentIndex(0); // Reset to first suggestion
+    onUseSuggestion(selectedSuggestion);
+    setSuggestions(suggestions.filter((_, i) => i !== currentIndex));
+    setCurrentIndex(0);
   };
 
   return (
     <div className={styles.main}>
       <div className={styles.selectionBox}>
-        <Button
-          buttonText="<"
+        <button
           onClick={handlePrev}
           disabled={suggestions.length === 0}
-        />
+          onMouseDown={() => setIsPrevPressed(true)}
+          onMouseUp={() => setIsPrevPressed(false)}
+          onMouseLeave={() => setIsPrevPressed(false)}
+          onTouchStart={() => setIsPrevPressed(true)}
+          onTouchEnd={() => setIsPrevPressed(false)}
+        >
+          <div
+            className={`border-2 border-black p-1 rounded transition-transform duration-100 h-10 w-10
+                ${
+                  isPrevPressed
+                    ? "shadow-none translate-x-1 translate-y-1"
+                    : "shadow-[4px_4px_0px_black]"
+                }`}
+          >
+            <Image src={Next} alt="Next icon" className="rotate-180" />
+          </div>
+        </button>
         <span>
           {suggestions.length > 0
             ? suggestions[currentIndex]
             : "No suggestions"}
         </span>
-        <Button
-          buttonText=">"
+        <button
           onClick={handleNext}
           disabled={suggestions.length === 0}
-        />
+          onMouseDown={() => setIsNextPressed(true)}
+          onMouseUp={() => setIsNextPressed(false)}
+          onMouseLeave={() => setIsNextPressed(false)}
+          onTouchStart={() => setIsNextPressed(true)}
+          onTouchEnd={() => setIsNextPressed(false)}
+        >
+          <div
+            className={`border-2 border-black p-1 rounded transition-transform duration-100 h-10 w-10
+                ${
+                  isNextPressed
+                    ? "shadow-none translate-x-1 translate-y-1"
+                    : "shadow-[4px_4px_0px_black]"
+                }`}
+          >
+            <Image src={Next} alt="Next icon" />
+          </div>
+        </button>
       </div>
       <Button
         buttonText="Use"
