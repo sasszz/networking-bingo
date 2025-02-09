@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./GameCode.module.scss";
+import { Button } from "../Button";
 
 export const GameCode = () => {
   const router = useRouter();
@@ -38,12 +39,7 @@ export const GameCode = () => {
             placeholder="Enter code..."
           />
         </label>
-        <input
-          className={`${styles.submit} ${error ? styles.disabled : ""}`}
-          type="submit"
-          value="Submit"
-          disabled={error}
-        />
+        <Button buttonText={"Submit"} disabled={error} type="submit" />
       </form>
     </div>
   );

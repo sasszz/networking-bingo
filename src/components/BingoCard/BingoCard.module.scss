@@ -5,3 +5,23 @@
     p-2
     gap-2;
 }
+
+.card {
+  @apply grid
+    grid-cols-5 
+    w-fit 
+    border 
+    border-black;
+}
+
+.menu {
+  @apply p-4
+    flex
+    flex-col
+    gap-4;
+}
+
+.bingo {
+  @apply text-fuchsia-500
+    mt-2;
+}

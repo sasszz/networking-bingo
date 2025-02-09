@@ -38,6 +38,7 @@ export const BingoButton = ({
             setIsSubmitted(true);
             onClick();
           }}
+          completed={isSubmitted}
         />
       )}
     </>

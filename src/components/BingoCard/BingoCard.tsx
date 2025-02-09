@@ -41,8 +41,12 @@ export const BingoCard = ({ items }: BingoCardProps) => {
   };
 
   return (
-    <div className={styles.main}>
-      <div className="grid grid-cols-5 w-fit border border-black">
+    <div
+      className={`${styles.main} ${
+        checkForBingo() ? styles.bingoBackground : ""
+      }`}
+    >
+      <div className={styles.card}>
         {updatedItems.map((item, index) => (
           <BingoButton
             key={index}
@@ -53,13 +57,13 @@ export const BingoCard = ({ items }: BingoCardProps) => {
           />
         ))}
       </div>
-      <div className="p-4 bg-slate-300 rounded flex flex-col gap-4">
+      <div className={styles.menu}>
         <ShareGameModal />
         <Link href="/admin/live-games/leaderboard/1">
           <Button buttonText={"View Leaderboard"} />
         </Link>
       </div>
-      {checkForBingo() && <p className="text-green-500 mt-2">BINGO!</p>}
+      {checkForBingo() && <p className={styles.bingo}>bingo!</p>}
     </div>
   );
 };

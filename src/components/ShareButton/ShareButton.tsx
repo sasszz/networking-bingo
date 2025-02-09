@@ -1,31 +1,38 @@
-import styles from "./LinkedInButton.module.scss";
+import styles from "./ShareButton.module.scss";
 import Image from "next/image";
-import LinkedIn from "../../../public/linkedin.svg";
+import Share from "../../../public/share.svg";
 import { useState } from "react";
 
-interface LinkedInButtonProps {
-  username: string;
+interface ShareButtonProps {
   disabled?: boolean;
 }
 
-export const LinkedInButton = ({ username, disabled }: LinkedInButtonProps) => {
+export const ShareButton = ({ disabled }: ShareButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePress = () => setIsPressed(true);
   const handleRelease = () => setIsPressed(false);
 
-  const link = `https://www.linkedin.com/in/${username}/`;
-
-  const handleClick = () => {
-    if (!disabled) {
-      window.open(link, "_blank");
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Check out this Bingo Game!",
+          text: "Join me in this fun networking bingo game.",
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      alert("Sharing is not supported on this browser.");
     }
   };
 
   return (
     <button
       className={`${styles.main} ${disabled ? styles.disabled : ""}`}
-      onClick={disabled ? undefined : handleClick}
+      onClick={disabled ? undefined : handleShare}
       disabled={disabled}
       onMouseDown={handlePress}
       onMouseUp={handleRelease}
@@ -41,7 +48,7 @@ export const LinkedInButton = ({ username, disabled }: LinkedInButtonProps) => {
                   : "shadow-[4px_4px_0px_black]"
               }`}
       >
-        <Image src={LinkedIn} alt="LinkedIn icon" />
+        <Image src={Share} alt="Share icon" />
       </div>
     </button>
   );

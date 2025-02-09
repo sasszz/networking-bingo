@@ -30,15 +30,3 @@
     rounded
     p-1;
 }
-
-.submit {
-  @apply bg-blue-500
-    py-1
-    px-4
-    cursor-pointer
-    hover:bg-blue-400
-    ease-in-out
-    transition-colors
-    text-white
-    rounded;
-}

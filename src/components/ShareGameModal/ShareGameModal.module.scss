@@ -7,32 +7,25 @@
     rounded;
 }
 
-.submit {
-  @apply bg-blue-500
-    py-1
-    px-4
-    cursor-pointer
-    enabled:hover:bg-blue-400
-    ease-in-out
-    transition-colors
-    text-white
-    rounded;
-}
-
 .opacityBackground {
   @apply absolute
     inset-0
     flex
-    items-center
-    justify-center
+    pt-24
+    items-start
+    justify-start
     bg-black
     bg-opacity-30
     z-50;
 }
 
 .main {
-  @apply bg-lime-300
+  @apply bg-white
+    relative
+    border-2
+    border-black
     p-8
+    py-24
     flex
     flex-col
     items-center
@@ -40,18 +33,12 @@
     gap-4
     rounded-lg
     shadow-lg
-    w-[400px]
+    w-full
     text-center;
 }
 
-.closeButton {
-  @apply self-end
-    transition-colors
-    ease-in-out
-    px-1.5
-    rounded
-    bg-white
-    text-black
-    hover:bg-black
-    hover:text-lime-300;
+.close {
+  @apply absolute
+    top-8
+    right-8;
 }

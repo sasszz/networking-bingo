@@ -3,24 +3,27 @@ import { EmailAutoComplete } from "../EmailAutoComplete";
 import styles from "./BingoButtonModal.module.scss";
 import { LinkedInButton } from "../LinkedInButton";
 import { Button } from "../Button";
+import { CloseButton } from "../CloseButton";
 
 interface BingoButtonModalProps {
   label: string;
   onClose: () => void;
   onSuccess: () => void;
+  completed?: boolean;
 }
 
 export const BingoButtonModal = ({
   label,
   onClose,
   onSuccess,
+  completed = false,
 }: BingoButtonModalProps) => {
   const [email, setEmail] = useState("");
   const [linkedIn, setLinkedIn] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [error, setError] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(completed);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,7 +31,7 @@ export const BingoButtonModal = ({
     setIsSubmitted(true);
     onSuccess();
   };
-  
+
   const handleEdit = () => {
     setTimeout(() => setIsSubmitted(false), 0);
   };
@@ -36,9 +39,9 @@ export const BingoButtonModal = ({
   return (
     <div className={styles.opacityBackground}>
       <div className={styles.main}>
-        <button className={styles.closeButton} onClick={onClose}>
-          X
-        </button>
+        <div className={styles.close}>
+          <CloseButton onClick={onClose} />
+        </div>
         <h2>{label}</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label className={styles.label}>

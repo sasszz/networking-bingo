@@ -5,6 +5,8 @@ import QRCode from "react-qr-code";
 import styles from "./ShareGameModal.module.scss";
 import { CopyButton } from "../CopyButton";
 import { Button } from "../Button";
+import { CloseButton } from "../CloseButton";
+import { ShareButton } from "../ShareButton";
 
 export const ShareGameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,12 +19,9 @@ export const ShareGameModal = () => {
       {isOpen && (
         <div className={styles.opacityBackground}>
           <div className={styles.main}>
-            <button
-              className={styles.closeButton}
-              onClick={() => setIsOpen(false)}
-            >
-              X
-            </button>
+            <div className={styles.close}>
+              <CloseButton onClick={() => setIsOpen(false)} />
+            </div>
             <div className="w-28 h-28">
               <QRCode
                 value={testLink}
@@ -31,7 +30,7 @@ export const ShareGameModal = () => {
             </div>
             <p>Game Code:</p>
             <CopyButton text={testCode} />
-            <CopyButton text={testLink} />
+            <ShareButton />
           </div>
         </div>
       )}
