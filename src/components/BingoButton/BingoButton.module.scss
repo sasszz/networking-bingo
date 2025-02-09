@@ -2,11 +2,11 @@
   @apply bg-white
     border
     border-black
-    h-24
-    w-24
+    aspect-square
     flex
     items-center
-    justify-center;
+    justify-center
+    p-1;
 }
 
 .completed {

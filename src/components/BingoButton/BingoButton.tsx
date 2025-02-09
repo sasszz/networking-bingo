@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ReactFitty } from "react-fitty";
 import styles from "./BingoButton.module.scss";
 import { BingoButtonModal } from "../BingoButtonModal";
 
@@ -26,7 +27,7 @@ export const BingoButton = ({
         }`}
         onClick={() => (isFree ? null : setIsOpen(true))}
       >
-        {label}
+        <ReactFitty wrapText>{label}</ReactFitty>
       </button>
 
       {isOpen && (

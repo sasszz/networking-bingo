@@ -1,7 +1,9 @@
 .main {
   @apply flex
-    flex-row
-    gap-12;
+    flex-col
+    w-screen
+    p-2
+    gap-2;
 }
 
 .submit {
