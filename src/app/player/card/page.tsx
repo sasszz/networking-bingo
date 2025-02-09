@@ -4,32 +4,32 @@ import { BingoCard } from "@/components";
 
 export default function Player() {
   const bingoItems = [
-    "Web3 developer",
-    "Codes in Typescript",
-    "Has given a tech talk",
-    "Attended a hackathon",
-    "Coding Bootcamp graduate",
-    "Ran a marathon",
-    "Works in Customer Support",
-    "Met a PM",
-    "Is DevOps",
-    "Uses a mechanical keyboard",
-    "Prefers dark mode",
-    "Works remotely",
-    "Works at a startup",
-    "Is a recruiter",
-    "Is Wearing a blazer",
-    "Is wearing sneakers",
-    "Is wearing a tie",
-    "Is drinking water",
-    "Is drinking a beer",
-    "Owns a dog",
-    "Owns a cat",
-    "Walks or bikes to work",
-    "Commutes 30+ min",
-    "Takes the bus to work"
-  ]
-  
+    "takes the bus to work",
+    "commutes 30+ min",
+    "walks or bikes to work",
+    "cat person",
+    "owns a dog",
+    "drinking a beer",
+    "drinking water",
+    "wearing a tie",
+    "wearing sneakers",
+    "ubered",
+    "recruiter",
+    "works at a startup",
+    "works remote",
+    "prefers dark mode",
+    "devops",
+    "project manager",
+    "cx rep",
+    "ran a marathon",
+    "bootcamp grad",
+    "attended a hackathon",
+    "gave a tech talk",
+    "typescript dev",
+    "web3 degen",
+    "uses chatgpt",
+  ];
+
   return (
     <div className="flex items-start justify-center h-screen">
       <div className="flex flex-col gap-24 text-center pt-12">

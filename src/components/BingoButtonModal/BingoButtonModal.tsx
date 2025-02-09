@@ -2,6 +2,7 @@ import { useState } from "react";
 import { EmailAutoComplete } from "../EmailAutoComplete";
 import styles from "./BingoButtonModal.module.scss";
 import { LinkedInButton } from "../LinkedInButton";
+import { Button } from "../Button";
 
 interface BingoButtonModalProps {
   label: string;
@@ -23,16 +24,14 @@ export const BingoButtonModal = ({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // if (!email.trim()) {
-    //   setError(true);
-    //   return;
-    // }
     setError(false);
     setIsSubmitted(true);
     onSuccess();
   };
-
-  const handleEdit = () => setIsSubmitted(false);
+  
+  const handleEdit = () => {
+    setTimeout(() => setIsSubmitted(false), 0);
+  };
 
   return (
     <div className={styles.opacityBackground}>
@@ -88,20 +87,9 @@ export const BingoButtonModal = ({
             />
           </label>
           {!isSubmitted ? (
-            <input
-              className={`${styles.submit} ${error ? styles.disabled : ""}`}
-              type="submit"
-              value="Submit"
-              disabled={error}
-            />
+            <Button buttonText="Submit" type="submit" disabled={error} />
           ) : (
-            <button
-              className={styles.submit}
-              type="button"
-              onClick={handleEdit}
-            >
-              Edit
-            </button>
+            <Button buttonText="Edit" type="button" onClick={handleEdit} />
           )}
         </form>
       </div>

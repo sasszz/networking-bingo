@@ -3,6 +3,7 @@ export * from "./BingoButtonModal";
 export * from "./BingoCard";
 export * from "./BingoCardCreationForm";
 export * from "./BingoGameCreationForm";
+export * from "./Button"
 export * from "./CopyButton";
 export * from "./EmailAutoComplete";
 export * from "./GameCode";

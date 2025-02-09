@@ -4,6 +4,7 @@ import { useState } from "react";
 import QRCode from "react-qr-code";
 import styles from "./ShareGameModal.module.scss";
 import { CopyButton } from "../CopyButton";
+import { Button } from "../Button";
 
 export const ShareGameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,13 +13,7 @@ export const ShareGameModal = () => {
 
   return (
     <div>
-      <button
-        type="button"
-        className={styles.submit}
-        onClick={() => setIsOpen(true)}
-      >
-        Share Game
-      </button>
+      <Button buttonText="Share Game" onClick={() => setIsOpen(true)} />
       {isOpen && (
         <div className={styles.opacityBackground}>
           <div className={styles.main}>

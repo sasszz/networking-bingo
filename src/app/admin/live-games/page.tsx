@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import styles from "../../page.module.scss";
+import { Button } from "@/components";
 
 export default function LiveGames() {
   return (
@@ -13,11 +13,8 @@ export default function LiveGames() {
           className="flex flex-row gap-4 justify-center items-center"
         >
           <p>Live Game No {gameNumber}</p>
-          <Link
-            href={`/admin/live-games/leaderboard/${gameNumber}`}
-            className={styles.button}
-          >
-            <button>Leaderboard</button>
+          <Link href={`/admin/live-games/leaderboard/${gameNumber}`}>
+            <Button buttonText={"Leaderboard"} />
           </Link>
         </div>
       ))}

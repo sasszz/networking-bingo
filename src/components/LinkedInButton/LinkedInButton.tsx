@@ -9,7 +9,6 @@ interface LinkedInButtonProps {
 
 export const LinkedInButton = ({ username, disabled }: LinkedInButtonProps) => {
   const link = `https://www.linkedin.com/in/${username}/`;
-  console.log(disabled);
 
   const handleClick = () => {
     if (!disabled) {

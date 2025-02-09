@@ -12,8 +12,6 @@ export default function Admin() {
     setSubmitted(true);
   };
 
-  console.log({ bingoItems });
-
   return (
     <div className="flex items-start justify-center h-screen">
       {submitted ? (

@@ -3,6 +3,7 @@ import { BingoButton } from "../BingoButton";
 import styles from "./BingoCard.module.scss";
 import { ShareGameModal } from "../ShareGameModal";
 import Link from "next/link";
+import { Button } from "../Button";
 
 interface BingoCardProps {
   items: string[];
@@ -41,7 +42,7 @@ export const BingoCard = ({ items }: BingoCardProps) => {
 
   return (
     <div className={styles.main}>
-      <div className="grid grid-cols-5 w-fit">
+      <div className="grid grid-cols-5 w-fit border border-black">
         {updatedItems.map((item, index) => (
           <BingoButton
             key={index}
@@ -55,7 +56,7 @@ export const BingoCard = ({ items }: BingoCardProps) => {
       <div className="p-4 bg-slate-300 rounded flex flex-col gap-4">
         <ShareGameModal />
         <Link href="/admin/live-games/leaderboard/1">
-          <button className={styles.submit}>View Leaderboard</button>
+          <Button buttonText={"View Leaderboard"} />
         </Link>
       </div>
       {checkForBingo() && <p className="text-green-500 mt-2">BINGO!</p>}

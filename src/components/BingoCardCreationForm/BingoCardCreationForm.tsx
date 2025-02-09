@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./BingoCardCreationForm.module.scss";
 import { SuggestionButton } from "../SuggestionButton";
+import { Button } from "../Button";
 
 interface BingoCardCreationFormProps {
   onSubmit: (values: string[]) => void;
@@ -79,9 +80,7 @@ export const BingoCardCreationForm = ({
         {fields.length === 24 ? (
           <input className={styles.submit} type="submit" value="Submit" />
         ) : (
-          <button type="button" className={styles.submit} onClick={handleNext}>
-            Next
-          </button>
+          <Button buttonText={"Next"} onClick={handleNext} />
         )}
         {fields.map((_, index) => (
           <label key={index} className={styles.label}>

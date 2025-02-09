@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./BingoGameCreationForm.module.scss";
 import { MiniBingoCard } from "../MiniBingoCard";
+import { Button } from "../Button";
 
 type BingoType = "one-line" | "two-line" | "three-line" | "window" | "blackout";
 
@@ -125,10 +126,7 @@ export const BingoGameCreationForm = () => {
             <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
-
-        <button className={styles.submit} type="submit">
-          {isSubmitted ? "Edit" : "Submit"}
-        </button>
+          <Button buttonText={isSubmitted ? "Edit" : "Submit"} type="submit"/>
       </form>
     </div>
   );
