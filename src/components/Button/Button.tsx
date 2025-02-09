@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Button.module.scss";
 
 interface ButtonProps {
@@ -14,12 +14,24 @@ export const Button = ({
   disabled,
   onClick,
 }: ButtonProps) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePress = () => setIsPressed(true);
+  const handleRelease = () => setIsPressed(false);
+
   return (
     <button
       disabled={disabled}
       type={type ? type : "button"}
-      className={styles.main}
       onClick={onClick}
+      onMouseDown={handlePress}
+      onMouseUp={handleRelease}
+      onMouseLeave={handleRelease}
+      onTouchStart={handlePress}
+      onTouchEnd={handleRelease}
+      className={`${styles.main} ${
+        isPressed ? styles.pressed : styles.beforePressed
+      } ${disabled ? styles.disabled : ""}`}
     >
       {buttonText}
     </button>

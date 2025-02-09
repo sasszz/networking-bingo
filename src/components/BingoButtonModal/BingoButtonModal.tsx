@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { EmailAutoComplete } from "../EmailAutoComplete";
 import styles from "./BingoButtonModal.module.scss";
-import { LinkedInButton } from "../LinkedInButton";
 import { Button } from "../Button";
-import { CloseButton } from "../CloseButton";
+import { IconButton, SvgIcons } from "../IconButton";
+import { openLink } from "../utilities";
 
 interface BingoButtonModalProps {
   label: string;
@@ -19,7 +19,7 @@ export const BingoButtonModal = ({
   completed = false,
 }: BingoButtonModalProps) => {
   const [email, setEmail] = useState("");
-  const [linkedIn, setLinkedIn] = useState("");
+  const [linkedInUsername, setLinkedInUsername] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [error, setError] = useState(false);
@@ -36,11 +36,13 @@ export const BingoButtonModal = ({
     setTimeout(() => setIsSubmitted(false), 0);
   };
 
+  const link = `https://www.linkedin.com/in/${linkedInUsername}/`;
+
   return (
     <div className={styles.opacityBackground}>
       <div className={styles.main}>
         <div className={styles.close}>
-          <CloseButton onClick={onClose} />
+          <IconButton icon={SvgIcons.Close} onClick={onClose} />
         </div>
         <h2>{label}</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -50,12 +52,16 @@ export const BingoButtonModal = ({
               className={styles.input}
               type="text"
               placeholder="username"
-              value={linkedIn}
-              onChange={(e) => setLinkedIn(e.target.value)}
+              value={linkedInUsername}
+              onChange={(e) => setLinkedInUsername(e.target.value)}
               disabled={isSubmitted}
             />
           </label>
-          <LinkedInButton username={linkedIn} disabled={!isSubmitted} />
+          <IconButton
+            icon={SvgIcons.LinkedIn}
+            onClick={() => openLink(link)}
+            disabled={!isSubmitted}
+          />
           <label className={styles.label}>
             Email
             <EmailAutoComplete

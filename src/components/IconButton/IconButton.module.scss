@@ -1,15 +1,15 @@
 .main {
-  @apply bg-white
-    py-1
-    px-4
+  @apply flex
+    items-center
+    justify-center
     border-2
-    lowercase
     border-black
-    cursor-pointer
-    ease-in-out
-    transition-colors
-    text-black
-    rounded;
+    p-1
+    rounded
+    transition-transform
+    duration-100
+    h-10
+    w-10;
 }
 
 .pressed {

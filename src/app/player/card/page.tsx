@@ -31,7 +31,7 @@ export default function Player() {
   ];
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-start justify-center h-screen">
       <div className="flex flex-col gap-24 lg:gap-4 text-center pt-12">
         <h2>Networking Bingo</h2>
         <BingoCard items={bingoItems} />
