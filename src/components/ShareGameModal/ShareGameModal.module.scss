@@ -14,6 +14,7 @@
     pt-24
     items-start
     justify-start
+    lg:justify-center
     bg-black
     bg-opacity-30
     z-50;
@@ -26,6 +27,7 @@
     border-black
     p-8
     py-24
+    lg:w-[600px]
     flex
     flex-col
     items-center

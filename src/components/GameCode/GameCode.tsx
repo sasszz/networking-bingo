@@ -7,14 +7,15 @@ import { Button } from "../Button";
 
 export const GameCode = () => {
   const router = useRouter();
-  const gameCodePlaceholder = "ABCDEF";
+  const gameCodePlaceholder = "abcdef";
 
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("abcdef");
+  const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState(false);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (code.toUpperCase() !== gameCodePlaceholder) {
+    if (code !== gameCodePlaceholder) {
       setError(true);
       return;
     }
@@ -25,6 +26,20 @@ export const GameCode = () => {
   return (
     <div>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <label className={styles.label}>
+          Display Name
+          <input
+            className={styles.input}
+            type="text"
+            value={displayName}
+            onChange={(event) => {
+              const value = event.target.value;
+              setDisplayName(value);
+              // if (value.trim()) setError(false);
+            }}
+            placeholder="Enter display name..."
+          />
+        </label>
         <label className={styles.label}>
           Enter Game Code
           <input
@@ -39,7 +54,7 @@ export const GameCode = () => {
             placeholder="Enter code..."
           />
         </label>
-        <Button buttonText={"Submit"} disabled={error} type="submit" />
+        <Button buttonText={"Enter Game"} disabled={error} type="submit" />
       </form>
     </div>
   );

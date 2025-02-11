@@ -1,0 +1,31 @@
+.main {
+  @apply flex
+    flex-col
+    items-center
+    gap-2;
+}
+
+.timeClockRow {
+  @apply flex
+    items-center
+    gap-1;
+}
+
+.timeDigits {
+  @apply flex
+    gap-1;
+}
+
+.timeBox {
+  @apply w-6
+    h-6
+    flex
+    items-center
+    justify-center
+    bg-white border
+    border-black
+    rounded
+    text-center
+    font-bold
+    shadow-[2px_2px_0px_black];
+}

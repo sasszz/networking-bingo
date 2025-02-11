@@ -15,7 +15,7 @@ export default function Admin() {
   return (
     <div className="flex items-start justify-center h-screen">
       {submitted ? (
-        <div className="flex flex-col gap-24 text-center pt-12">
+        <div className="flex flex-col gap-24 text-center">
           <h2>Networking Bingo</h2>
           <BingoCard items={bingoItems} />
         </div>

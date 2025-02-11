@@ -17,15 +17,17 @@ const formatTime = (baseHour: number, offset: number) => {
   const totalMinutes = offset;
   const hours = baseHour + Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  return `2025-02-04T${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00Z`;
+  return `2025-02-04T${String(hours).padStart(2, "0")}:${String(
+    minutes
+  ).padStart(2, "0")}:00Z`;
 };
 
 export const games: Record<string, Game> = {
   "1": {
     gameId: "1",
     gameName: "Networking Bingo",
-    startTime: "2025-02-03T21:00:00Z",
-    endTime: "2025-02-03T24:00:00Z",
+    startTime: "2025-02-11T21:00:00Z",
+    endTime: "2025-02-12T01:10:00Z",
     numberOfPlayers: 6,
     winningType: "one-line" as
       | "one-line"

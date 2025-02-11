@@ -5,12 +5,14 @@ import { MiniBingoCard } from "../MiniBingoCard";
 import { calculateProgress } from "./calculate-progress";
 import { sortPlayers } from "./sort-players";
 import { Game } from "./game-data";
+import { GameTime } from "../GameTime";
+import styles from "./Leaderboard.module.scss";
 
 interface LeaderboardProps {
   gameData: Game;
 }
 
-export const Leaderboard = ({ gameData }: LeaderboardProps) => {
+export const Leaderboard: React.FC<LeaderboardProps> = ({ gameData }) => {
   const [game, setGame] = useState<Game | null>(null);
 
   useEffect(() => {
@@ -30,27 +32,24 @@ export const Leaderboard = ({ gameData }: LeaderboardProps) => {
   const sortedPlayers = sortPlayers(playersWithProgress);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className={styles.main}>
       <h2>{game.gameName}</h2>
-      <p>Started at: {new Date(game.startTime).toLocaleString()}</p>
-      <p>Ends at: {new Date(game.endTime).toLocaleString()}</p>
-      <p>Players: {game.numberOfPlayers}</p>
-      <p>Winning Condition: {game.winningType}</p>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div className={styles.gameInfoBox}>
+        <GameTime startTime={game.startTime} endTime={game.endTime} />
+        <p>{game.numberOfPlayers} players</p>
+        <p>Winning Condition: {game.winningType}</p>
+      </div>
+      <div className={styles.leaderboardGrid}>
         {sortedPlayers.map((player) => (
-          <div
-            key={player.name}
-            className="flex flex-col items-center gap-2 p-4 border rounded-lg shadow"
-          >
-            <span className="font-semibold">
-              {player.name}{" "}
+          <div key={player.name} className={styles.playerTile}>
+            <p>{player.name}</p>
+            <p>
               {player.completedAt
-                ? `(Completed at ${new Date(
+                ? `bingo at ${new Date(
                     player.completedAt
-                  ).toLocaleTimeString()})`
-                : `(Tiles needed: ${player.tilesNeeded})`}
-            </span>
+                  ).toLocaleTimeString()}`
+                : `Tiles needed: ${player.tilesNeeded}`}
+            </p>
             <MiniBingoCard
               type={game.winningType}
               filledCoordinates={player.filledCoordinates.map(

@@ -2,6 +2,8 @@
   @apply flex
     flex-col
     w-screen
+    lg:max-h-screen
+    lg:overscroll-y-none
     items-center
     justify-center
     p-2

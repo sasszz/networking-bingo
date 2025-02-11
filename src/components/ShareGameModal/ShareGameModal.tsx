@@ -12,7 +12,7 @@ export const ShareGameModal = () => {
   const [copied, setCopied] = useState(false);
 
   const testLink = "http://localhost:3000/player/card";
-  const testCode = "ABCDEF";
+  const testCode = "abcdef";
 
   return (
     <div>

@@ -20,6 +20,7 @@
 .label {
   @apply p-1
     flex
+    flex-col
     gap-2
     items-center;
 }
