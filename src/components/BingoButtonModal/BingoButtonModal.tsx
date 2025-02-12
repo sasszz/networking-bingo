@@ -83,7 +83,9 @@ export const BingoButtonModal = ({
   if (linkedInError && !emailError)
     errorMessages.push("LinkedIn link is in an invalid format.");
   if (emailError)
-    errorMessages.push("try and enter either an email address or a LinkedIn profile link for your new friend.");
+    errorMessages.push(
+      "enter either an email address or a LinkedIn profile link for your new friend."
+    );
 
   return (
     <div className={styles.opacityBackground}>
@@ -122,7 +124,7 @@ export const BingoButtonModal = ({
                 <IconButton
                   icon={SvgIcons.LinkedIn}
                   onClick={() => openLink(linkedInLink)}
-                  disabled={!isSubmitted}
+                  disabled={!isSubmitted || !linkedInLink.trim()}
                 />
               </div>
             </div>
@@ -155,10 +157,9 @@ export const BingoButtonModal = ({
             )}
           </form>
           {errorMessages.length > 0 && (
-            <div className="flex flex-col gap-4 items-end text-end justify-end">
+            <div className={styles.errorsText}>
               <p>
-                hey there! you look excited to play and win bingo. the game is
-                trust based, but we can&apos;t make it too easy! 
+                the game is trust based, but we can&apos;t make it too easy!
               </p>
               {errorMessages.map((message, index) => (
                 <p key={index} className={styles.errorText}>

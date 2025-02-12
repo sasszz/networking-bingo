@@ -24,10 +24,11 @@
     rounded-lg
     shadow-lg
     w-full
-    h-full
+    h-screen
     lg:h-[600px]
     lg:w-[600px]
-    text-center;
+    text-center
+    overflow-hidden;
 }
 
 .close {
@@ -38,11 +39,12 @@
 
 .centerBody {
   @apply w-full
-    gap-12
+    h-screen
+    gap-8
     flex
     flex-col
     items-center
-    justify-center;
+    justify-start;
 }
 
 .form {
@@ -109,4 +111,13 @@
 .disabled {
   @apply bg-slate-500
     cursor-not-allowed;
+}
+
+.errorsText {
+  @apply flex 
+    flex-col 
+    gap-2 
+    text-end
+    lg:text-center
+    max-w-fit;
 }
