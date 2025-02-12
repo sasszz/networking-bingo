@@ -34,8 +34,7 @@ export const BingoButtonModal = ({
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const validateLinkedIn = (link: string) =>
-    /^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/.test(link);
+  const validateLinkedIn = (link: string) => link.includes("linkedin.com");
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
