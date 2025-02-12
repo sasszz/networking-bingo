@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MiniBingoCard, MiniMiniBingoCard } from "../MiniBingoCard";
+import { MiniMiniBingoCard } from "../MiniBingoCard";
 import { calculateProgress } from "./calculate-progress";
 import { sortPlayers } from "./sort-players";
 import { Game } from "./game-data";
@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { PeopleLine } from "../PeopleLine/PeopleLine";
 import { IconButton, SvgIcons } from "../IconButton";
 import { scrollToTop } from "../utilities";
+import { LeaderboardPlayerTile } from "../LeaderboardPlayerTile";
 
 interface LeaderboardProps {
   gameData: Game;
@@ -60,22 +61,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ gameData }) => {
       </div>
       <div className={styles.leaderboardGrid}>
         {sortedPlayers.map((player) => (
-          <div key={player.name} className={styles.playerTile}>
-            <p>{player.name}</p>
-            <p>
-              {player.completedAt
-                ? `bingo at ${new Date(
-                    player.completedAt
-                  ).toLocaleTimeString()}`
-                : `Tiles needed: ${player.tilesNeeded}`}
-            </p>
-            <MiniBingoCard
-              type={game.winningType}
-              filledCoordinates={player.filledCoordinates.map(
-                ({ coord }) => coord
-              )}
-            />
-          </div>
+          <LeaderboardPlayerTile
+            key={player.name}
+            player={player}
+            game={game}
+          />
         ))}
       </div>
       <IconButton icon={SvgIcons.Up} onClick={() => scrollToTop()} />

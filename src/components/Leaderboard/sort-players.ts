@@ -1,6 +1,6 @@
 import { Player } from "./game-data";
 
-interface PlayerWithProgress extends Player {
+export interface PlayerWithProgress extends Player {
   tilesNeeded: number;
   completedAt: string | null;
 }

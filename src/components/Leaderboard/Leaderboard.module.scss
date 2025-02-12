@@ -26,18 +26,6 @@
     md:grid-cols-3
     gap-4
     w-full
-    lg:w-[1000px]
+    lg:w-fit
     p-2;
-}
-
-.playerTile {
-  @apply flex
-    flex-col
-    items-center
-    gap-2
-    p-2
-    border
-    border-black
-    rounded-lg
-    shadow-[4px_4px_0px_black];
 }

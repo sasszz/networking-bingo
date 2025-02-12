@@ -1,0 +1,32 @@
+.motionDiv {
+  @apply relative
+    flex
+    flex-col
+    items-center
+    lg:h-[220px]
+    lg:w-[220px]
+    w-full
+    h-64;
+}
+
+.tile {
+  @apply absolute
+    w-full 
+    h-full 
+    flex 
+    flex-col 
+    justify-center 
+    items-center 
+    bg-white 
+    rounded-lg 
+    border 
+    border-black;
+}
+
+.scrollableList {
+  @apply w-full
+    overflow-y-auto
+    p-2
+    rounded-md
+    bg-gray-200;
+}

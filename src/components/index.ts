@@ -8,6 +8,8 @@ export * from "./EmailAutoComplete";
 export * from "./GameCode";
 export * from "./GameTime";
 export * from "./IconButton";
+export * from "./Leaderboard"
+export * from "./LeaderboardPlayerTile"
 export * from "./MiniBingoCard";
 export * from "./ShareGameModal";
 export * from "./SuggestionButton";
