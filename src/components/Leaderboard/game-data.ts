@@ -27,7 +27,7 @@ export const games: Record<string, Game> = {
     gameId: "1",
     gameName: "Networking Bingo",
     startTime: "2025-02-11T21:00:00Z",
-    endTime: "2025-02-12T01:10:00Z",
+    endTime: "2025-02-12T05:10:00Z",
     numberOfPlayers: 6,
     winningType: "one-line" as
       | "one-line"
