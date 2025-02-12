@@ -13,12 +13,21 @@
 
 .input {
   @apply border-2
-    border-black
     rounded
     p-1
     disabled:opacity-50 
     disabled:cursor-not-allowed 
     disabled:border-gray-400;
+}
+
+.noError {
+  @apply input
+    border-black;
+}
+
+.error {
+  @apply input
+    border-red-500;
 }
 
 .dropdown {

@@ -8,7 +8,11 @@ import { openLink } from "../utilities";
 interface BingoButtonModalProps {
   label: string;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (entry: {
+    name: string;
+    email?: string;
+    linkedInLink?: string;
+  }) => void;
   completed?: boolean;
 }
 
@@ -19,25 +23,67 @@ export const BingoButtonModal = ({
   completed = false,
 }: BingoButtonModalProps) => {
   const [email, setEmail] = useState("");
-  const [linkedInUsername, setLinkedInUsername] = useState("");
   const [linkedInLink, setLinkedInLink] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
-  const [error, setError] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(completed);
+  const [emailError, setEmailError] = useState(false);
+  const [linkedInError, setLinkedInError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+
+  const validateEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const validateLinkedIn = (link: string) =>
+    /^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/.test(link);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    setError(false);
+
+    let isValid = true;
+
+    if (!name.trim()) {
+      setNameError(true);
+      isValid = false;
+    } else {
+      setNameError(false);
+    }
+
+    if (!email.trim() && !linkedInLink.trim()) {
+      setEmailError(true);
+      setLinkedInError(true);
+      isValid = false;
+    } else {
+      setEmailError(false);
+      setLinkedInError(false);
+    }
+
+    if (email.trim() && !validateEmail(email)) {
+      setEmailError(true);
+      isValid = false;
+    }
+
+    if (linkedInLink.trim() && !validateLinkedIn(linkedInLink)) {
+      setLinkedInError(true);
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
     setIsSubmitted(true);
-    onSuccess();
+    onSuccess({ name, email, linkedInLink });
   };
 
   const handleEdit = () => {
     setTimeout(() => setIsSubmitted(false), 0);
   };
 
-  const link = `https://www.linkedin.com/in/${linkedInUsername}/`;
+  const errorMessages: string[] = [];
+  if (nameError) errorMessages.push("enter your new friend's name.");
+  if (linkedInError && !emailError)
+    errorMessages.push("LinkedIn link is in an invalid format.");
+  if (emailError)
+    errorMessages.push("try and enter either an email address or a LinkedIn profile link for your new friend.");
 
   return (
     <div className={styles.opacityBackground}>
@@ -48,58 +94,42 @@ export const BingoButtonModal = ({
         <div className={styles.centerBody}>
           <h2>{label}</h2>
           <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.linkedin}>
-              <p className="text-end">LinkedIn Profile</p>
+            <div
+              className={
+                linkedInError ? styles.linkedInError : styles.linkedInNoError
+              }
+            >
+              <p className="text-end">Email or LinkedIn*</p>
               <label className={styles.label}>
-                linkedin.com/in/
-                <input
-                  className={styles.inputSmall}
-                  type="text"
-                  placeholder="username"
-                  value={linkedInUsername}
-                  onChange={(e) => setLinkedInUsername(e.target.value)}
-                  disabled={isSubmitted || linkedInLink.length > 0}
+                Email*
+                <EmailAutoComplete
+                  value={email}
+                  onChange={(value) => setEmail(value)}
+                  disabled={isSubmitted}
+                  error={emailError}
                 />
               </label>
               <p>or</p>
-              <input
-                className={styles.input}
-                type="text"
-                placeholder="LinkedIn Profile Link"
-                value={linkedInLink}
-                onChange={(e) => setLinkedInLink(e.target.value)}
-                disabled={isSubmitted || linkedInUsername.length > 0}
-              />
-              <div className={styles.linkedInTextBody}>
-                {!isSubmitted ? (
-                  <p className={styles.grayLinkedInText}>
-                    click submit to activate linkedin button
-                  </p>
-                ) : (
-                  <p className={styles.linkedinText}>view linkedin profile</p>
-                )}
+              <div className={styles.linkedInRow}>
+                <input
+                  className={linkedInError ? styles.error : styles.noError}
+                  type="text"
+                  placeholder="LinkedIn Profile Link"
+                  value={linkedInLink}
+                  onChange={(e) => setLinkedInLink(e.target.value)}
+                  disabled={isSubmitted}
+                />
                 <IconButton
                   icon={SvgIcons.LinkedIn}
-                  onClick={() => openLink(link)}
+                  onClick={() => openLink(linkedInLink)}
                   disabled={!isSubmitted}
                 />
               </div>
             </div>
             <label className={styles.label}>
-              Email
-              <EmailAutoComplete
-                value={email}
-                onChange={(value) => {
-                  setEmail(value);
-                  if (value.trim()) setError(false);
-                }}
-                disabled={isSubmitted}
-              />
-            </label>
-            <label className={styles.label}>
-              Name
+              Name*
               <input
-                className={styles.input}
+                className={nameError ? styles.error : styles.noError}
                 type="text"
                 placeholder="Enter a name..."
                 value={name}
@@ -110,7 +140,7 @@ export const BingoButtonModal = ({
             <label className={styles.label}>
               Company
               <input
-                className={styles.input}
+                className={styles.noError}
                 type="text"
                 placeholder="Enter a company..."
                 value={company}
@@ -119,11 +149,24 @@ export const BingoButtonModal = ({
               />
             </label>
             {!isSubmitted ? (
-              <Button buttonText="Submit" type="submit" disabled={error} />
+              <Button buttonText="Submit" type="submit" />
             ) : (
               <Button buttonText="Edit" type="button" onClick={handleEdit} />
             )}
           </form>
+          {errorMessages.length > 0 && (
+            <div className="flex flex-col gap-4 items-end text-end justify-end">
+              <p>
+                hey there! you look excited to play and win bingo. the game is
+                trust based, but we can&apos;t make it too easy! 
+              </p>
+              {errorMessages.map((message, index) => (
+                <p key={index} className={styles.errorText}>
+                  {message}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

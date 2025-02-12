@@ -6,12 +6,14 @@ interface EmailAutoCompleteProps {
   value: string;
   onChange: (value: string) => void;
   disabled: boolean;
+  error: boolean;
 }
 
 export const EmailAutoComplete = ({
   value,
   onChange,
   disabled,
+  error,
 }: EmailAutoCompleteProps) => {
   const baseList = [
     "gmail.com",
@@ -26,7 +28,7 @@ export const EmailAutoComplete = ({
       placeholder={`Enter an email...`}
       classNames={{
         wrapper: styles.wrapper,
-        input: styles.input,
+        input: error ? styles.error : styles.noError,
         dropdown: styles.dropdown,
         suggestion: styles.suggestion,
         domain: styles.domain,
