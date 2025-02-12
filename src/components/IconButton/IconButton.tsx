@@ -7,6 +7,7 @@ export enum SvgIcons {
   LinkedIn = "/linkedin.svg",
   Copy = "/copy.svg",
   Close = "/close.svg",
+  Up = "/up.svg",
 }
 
 interface IconButtonProps {
@@ -46,7 +47,7 @@ export const IconButton = ({
             isPressed ? styles.pressed : styles.beforePressed
           }`}
         >
-          <Image src={icon} alt={`${icon} icon`} width={20} height={20} />
+          <Image src={icon} alt={`${icon} icon`} width={25} height={25} />
         </div>
       </button>
       {!buttonOnly ? (

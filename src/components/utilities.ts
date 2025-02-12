@@ -30,3 +30,7 @@ export const handleCopy = async (
 export const openLink = (url: string) => {
   window.open(url, "_blank");
 };
+
+export const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};

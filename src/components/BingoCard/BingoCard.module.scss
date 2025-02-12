@@ -14,7 +14,8 @@
   @apply grid
     grid-cols-5 
     w-fit 
-    border 
+    border
+    lg:w-[800px]
     border-black;
 }
 

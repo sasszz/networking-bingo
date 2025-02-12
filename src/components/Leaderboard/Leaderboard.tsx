@@ -1,12 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MiniBingoCard } from "../MiniBingoCard";
+import { MiniBingoCard, MiniMiniBingoCard } from "../MiniBingoCard";
 import { calculateProgress } from "./calculate-progress";
 import { sortPlayers } from "./sort-players";
 import { Game } from "./game-data";
 import { GameTime } from "../GameTime";
 import styles from "./Leaderboard.module.scss";
+import { Button } from "../Button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { PeopleLine } from "../PeopleLine/PeopleLine";
+import { IconButton, SvgIcons } from "../IconButton";
+import { scrollToTop } from "../utilities";
 
 interface LeaderboardProps {
   gameData: Game;
@@ -14,6 +20,7 @@ interface LeaderboardProps {
 
 export const Leaderboard: React.FC<LeaderboardProps> = ({ gameData }) => {
   const [game, setGame] = useState<Game | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     setGame(gameData);
@@ -36,8 +43,20 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ gameData }) => {
       <h2>{game.gameName}</h2>
       <div className={styles.gameInfoBox}>
         <GameTime startTime={game.startTime} endTime={game.endTime} />
-        <p>{game.numberOfPlayers} players</p>
-        <p>Winning Condition: {game.winningType}</p>
+        <PeopleLine count={game.numberOfPlayers} />
+        <div className="flex flex-col items-center gap-1">
+          <p>Winning Condition: {game.winningType}</p>
+          <MiniMiniBingoCard type={game.winningType} />
+        </div>
+        <Link
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            router.back();
+          }}
+        >
+          <Button buttonText="Go Back" />
+        </Link>
       </div>
       <div className={styles.leaderboardGrid}>
         {sortedPlayers.map((player) => (
@@ -59,6 +78,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ gameData }) => {
           </div>
         ))}
       </div>
+      <IconButton icon={SvgIcons.Up} onClick={() => scrollToTop()} />
     </div>
   );
 };

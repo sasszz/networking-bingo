@@ -21,10 +21,10 @@ export const GameTime: React.FC<GameTimeProps> = ({ startTime, endTime }) => {
       const end = new Date(endTime);
 
       if (now < start) {
-        setStatusText(`Starts at: ${formatDateTime(startTime)}`);
+        setStatusText(`Starts on: ${formatDateTime(startTime)}`);
         setTimeLeft(null);
       } else if (now > end) {
-        setStatusText(`Ended at: ${formatDateTime(endTime)}`);
+        setStatusText(`Ended on: ${formatDateTime(endTime)}`);
         setTimeLeft(null);
       } else {
         const remaining = Math.max(0, end.getTime() - now.getTime());
@@ -79,9 +79,7 @@ const TimeDigits: React.FC<{ value: string }> = ({ value }) => (
 );
 
 const TimeBox: React.FC<{ value: string }> = ({ value }) => (
-  <div className={styles.timeBox}>
-    {value}
-  </div>
+  <div className={styles.timeBox}>{value}</div>
 );
 
 const formatDateTime = (date: string | number | Date): string => {

@@ -5,11 +5,10 @@ import QRCode from "react-qr-code";
 import styles from "./ShareGameModal.module.scss";
 import { Button } from "../Button";
 import { IconButton, SvgIcons } from "../IconButton";
-import { handleCopy, handleShare } from "../utilities";
+import { handleShare } from "../utilities";
 
 export const ShareGameModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const testLink = "http://localhost:3000/player/card";
   const testCode = "abcdef";
@@ -26,19 +25,13 @@ export const ShareGameModal = () => {
                 onClick={() => setIsOpen(false)}
               />
             </div>
+            <p>Scan to Join Game!</p>
             <div className="w-28 h-28">
               <QRCode
                 value={testLink}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
               />
             </div>
-            <p>Game Code:</p>
-            <IconButton
-              icon={SvgIcons.Copy}
-              text={testCode}
-              copied={copied}
-              onClick={() => handleCopy(testCode, setCopied)}
-            />
             <IconButton
               icon={SvgIcons.Share}
               onClick={() => handleShare(testCode)}

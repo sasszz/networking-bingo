@@ -3,7 +3,7 @@
     flex-col
     items-center
     justify-center
-    gap-2
+    gap-4
     py-8
     w-screen;
 }
@@ -17,7 +17,7 @@
     p-8
     w-full
     rounded
-    gap-4;
+    gap-8;
 }
 
 .leaderboardGrid {
@@ -26,6 +26,7 @@
     md:grid-cols-3
     gap-4
     w-full
+    lg:w-[1000px]
     p-2;
 }
 
