@@ -25,17 +25,19 @@ export const ShareGameModal = () => {
                 onClick={() => setIsOpen(false)}
               />
             </div>
-            <p>Scan to Join Game!</p>
-            <div className="w-28 h-28">
-              <QRCode
-                value={testLink}
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+            <div className={styles.shareBody}>
+              <p>Scan to Join Game!</p>
+              <div className="w-28 h-28">
+                <QRCode
+                  value={testLink}
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                />
+              </div>
+              <IconButton
+                icon={SvgIcons.Share}
+                onClick={() => handleShare(testCode)}
               />
             </div>
-            <IconButton
-              icon={SvgIcons.Share}
-              onClick={() => handleShare(testCode)}
-            />
           </div>
         </div>
       )}

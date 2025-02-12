@@ -11,7 +11,6 @@
   @apply absolute
     inset-0
     flex
-    pt-24
     items-start
     justify-start
     lg:justify-center
@@ -26,17 +25,25 @@
     border-2
     border-black
     p-8
-    py-24
-    lg:w-[600px]
     flex
     flex-col
     items-center
-    justify-center
-    gap-12
+    justify-start
+    gap-4
     rounded-lg
     shadow-lg
     w-full
+    h-full
+    lg:w-[600px]
     text-center;
+}
+
+.shareBody {
+  @apply flex
+    flex-col
+    gap-12
+    items-center
+    ;
 }
 
 .close {
