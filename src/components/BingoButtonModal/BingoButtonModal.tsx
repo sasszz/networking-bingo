@@ -122,8 +122,11 @@ export const BingoButtonModal = ({
                 />
                 <IconButton
                   icon={SvgIcons.LinkedIn}
-                  onClick={() => openLink(linkedInLink)}
-                  disabled={!isSubmitted || !linkedInLink.trim()}
+                  onClick={() =>
+                    openLink(
+                      linkedInLink ? linkedInLink : "https://www.linkedin.com/"
+                    )
+                  }
                 />
               </div>
             </div>

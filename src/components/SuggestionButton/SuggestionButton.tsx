@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SuggestionButton.module.scss";
-import Image from "next/image";
-import Next from "../../../public/next.svg";
 import { Button } from "../Button";
+import { IconButton, SvgIcons } from "../IconButton";
 
 interface SuggestionButtonProps {
   onUseSuggestion: (suggestion: string) => void;
@@ -46,8 +45,6 @@ export const SuggestionButton = ({
   ]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPrevPressed, setIsPrevPressed] = useState(false);
-  const [isNextPressed, setIsNextPressed] = useState(false);
 
   const handlePrev = () => {
     setCurrentIndex(
@@ -69,51 +66,13 @@ export const SuggestionButton = ({
   return (
     <div className={styles.main}>
       <div className={styles.selectionBox}>
-        <button
-          onClick={handlePrev}
-          disabled={suggestions.length === 0}
-          onMouseDown={() => setIsPrevPressed(true)}
-          onMouseUp={() => setIsPrevPressed(false)}
-          onMouseLeave={() => setIsPrevPressed(false)}
-          onTouchStart={() => setIsPrevPressed(true)}
-          onTouchEnd={() => setIsPrevPressed(false)}
-        >
-          <div
-            className={`border-2 border-black p-1 rounded transition-transform duration-100 h-10 w-10
-                ${
-                  isPrevPressed
-                    ? "shadow-none translate-x-1 translate-y-1"
-                    : "shadow-[4px_4px_0px_black]"
-                }`}
-          >
-            <Image src={Next} alt="Next icon" className="rotate-180" />
-          </div>
-        </button>
+        <IconButton icon={SvgIcons.Next} onClick={handlePrev} isPrev={true} />
         <span>
           {suggestions.length > 0
             ? suggestions[currentIndex]
             : "No suggestions"}
         </span>
-        <button
-          onClick={handleNext}
-          disabled={suggestions.length === 0}
-          onMouseDown={() => setIsNextPressed(true)}
-          onMouseUp={() => setIsNextPressed(false)}
-          onMouseLeave={() => setIsNextPressed(false)}
-          onTouchStart={() => setIsNextPressed(true)}
-          onTouchEnd={() => setIsNextPressed(false)}
-        >
-          <div
-            className={`border-2 border-black p-1 rounded transition-transform duration-100 h-10 w-10
-                ${
-                  isNextPressed
-                    ? "shadow-none translate-x-1 translate-y-1"
-                    : "shadow-[4px_4px_0px_black]"
-                }`}
-          >
-            <Image src={Next} alt="Next icon" />
-          </div>
-        </button>
+        <IconButton icon={SvgIcons.Next} onClick={handleNext} />
       </div>
       <Button
         buttonText="Use"

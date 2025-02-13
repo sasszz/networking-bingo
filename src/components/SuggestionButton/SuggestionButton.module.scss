@@ -1,11 +1,11 @@
 .main {
-  @apply bg-white
+  @apply bg-gray-200
     p-2
     rounded
     flex
     flex-row
     gap-2
-    w-[400px]
+    w-screen
     overflow-hidden
     justify-between;
 }
@@ -13,6 +13,10 @@
 .selectionBox {
   @apply flex
     items-center
-    w-full
-    justify-between;
+    justify-between
+    flex-grow;
+}
+
+.selectionBox span {
+  @apply truncate text-center w-full;
 }

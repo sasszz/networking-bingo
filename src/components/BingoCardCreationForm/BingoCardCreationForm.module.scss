@@ -1,11 +1,10 @@
 .main {
-  @apply bg-slate-300
-    w-fit
+  @apply w-fit
     px-12
-    py-4
+    pt-12
     flex
-    flex-col
     gap-8
+    flex-col
     text-center;
 }
 
@@ -14,7 +13,7 @@
     items-center
     justify-center
     flex-col
-    gap-2;
+    gap-12;
 }
 
 .label {
@@ -32,4 +31,19 @@
     disabled:opacity-50 
     disabled:cursor-not-allowed 
     disabled:border-gray-400;
+}
+
+.inputRow {
+  @apply flex
+    flex-row
+    gap-2
+    px-2
+    justify-start
+    items-center;
+}
+
+.prompts {
+  @apply flex
+    flex-col
+    gap-4;
 }

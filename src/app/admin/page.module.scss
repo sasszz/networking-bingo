@@ -1,0 +1,13 @@
+.letterBlock {
+  @apply w-6
+    h-6
+    flex
+    items-center
+    justify-center
+    bg-white border
+    border-black
+    rounded
+    text-center
+    font-bold
+    shadow-[2px_2px_0px_black];
+}

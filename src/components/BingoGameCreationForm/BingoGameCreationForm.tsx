@@ -5,7 +5,18 @@ import { Button } from "../Button";
 
 type BingoType = "one-line" | "two-line" | "three-line" | "window" | "blackout";
 
-export const BingoGameCreationForm = () => {
+type BingoGameCreationFormProps = {
+  onNext: (gameDetails: {
+    gameType: BingoType;
+    startTime: string;
+    endTime: string;
+    duration: string;
+  }) => void;
+};
+
+export const BingoGameCreationForm = ({
+  onNext,
+}: BingoGameCreationFormProps) => {
   const [gameType, setGameType] = useState<BingoType>("one-line");
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
@@ -48,20 +59,28 @@ export const BingoGameCreationForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(!isSubmitted);
+    setIsSubmitted(true);
+
+    const gameDetails = {
+      gameType,
+      startTime,
+      endTime,
+      duration,
+    };
+
+    onNext(gameDetails);
   };
 
   return (
     <div className={styles.main}>
-      <h2>Bingo Game Setup</h2>
       <MiniBingoCard type={gameType} />
       <form className={styles.form} onSubmit={handleSubmit}>
         <label className={styles.label}>
-          Name
+          Name*
           <input
             className={styles.input}
             type="text"
-            placeholder="Enter something..."
+            placeholder="Enter a name..."
             disabled={isSubmitted}
           />
         </label>
@@ -126,7 +145,9 @@ export const BingoGameCreationForm = () => {
             <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
-          <Button buttonText={isSubmitted ? "Edit" : "Submit"} type="submit"/>
+        <div className="self-end pt-4">
+          <Button buttonText="Next" type="submit" />
+        </div>
       </form>
     </div>
   );

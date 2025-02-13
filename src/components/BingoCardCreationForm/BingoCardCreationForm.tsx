@@ -49,54 +49,79 @@ export const BingoCardCreationForm = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (values.length === 24 && values.every((val) => val.trim() !== "")) {
-      onSubmit(values); // Send values to Home
+      onSubmit(values);
     }
   };
 
   return (
     <div className={styles.main}>
-      <h2>Bingo Card Creation Form</h2>
-      <SuggestionButton
-        onUseSuggestion={(suggestion) => {
-          setValues((prevValues) => {
-            const newValues = [...prevValues];
-            newValues[currentFieldIndex] = suggestion;
-            return newValues;
-          });
-
-          if (fields.length < 24) {
-            setFields((prevFields) => ["", ...prevFields]);
-            setValues((prevValues) => ["", ...prevValues]);
-            setCurrentFieldIndex(0);
-          }
-        }}
-      />
+      <div>
+        <p>prompt suggestion box</p>
+        <SuggestionButton
+          onUseSuggestion={(suggestion) => {
+            setValues((prevValues) => {
+              const newValues = [...prevValues];
+              newValues[currentFieldIndex] = suggestion;
+              return newValues;
+            });
+            if (fields.length < 24) {
+              setFields((prevFields) => ["", ...prevFields]);
+              setValues((prevValues) => ["", ...prevValues]);
+              setCurrentFieldIndex(0);
+            }
+          }}
+        />
+      </div>
 
       <form
         className={styles.form}
         onKeyDown={handleKeyDown}
         onSubmit={handleSubmit}
       >
-        {fields.length === 24 ? (
-          <input className={styles.submit} type="submit" value="Submit" />
-        ) : (
-          <Button buttonText={"Next"} onClick={handleNext} />
-        )}
-        {fields.map((_, index) => (
-          <label key={index} className={styles.label}>
-            Entry {fields.length - index}:
+        <div className={styles.inputRow}>
+          <label className={styles.label}>
+            <p className="w-[20px]">{fields.length}:</p>
             <input
               className={styles.input}
               type="text"
               ref={(el) => {
-                if (el) inputRefs.current[index] = el;
+                if (el) inputRefs.current[0] = el;
               }}
-              value={values[index]}
-              onChange={(e) => handleChange(index, e)}
-              placeholder={`Enter something...`}
+              value={values[0]}
+              onChange={(e) => handleChange(0, e)}
+              placeholder="Enter something..."
             />
           </label>
-        ))}
+          <div className="w-[100px]">
+            {fields.length === 24 ? (
+              <Button
+                buttonText="Submit"
+                type="submit"
+                disabled={values[0].trim() === ""}
+              />
+            ) : (
+              <Button buttonText="Next" onClick={handleNext} />
+            )}
+          </div>
+        </div>
+        <div className={styles.prompts}>
+          <p>bingo card prompts</p>
+          {fields.slice(1).map((_, index) => (
+            <label key={index + 1} className={styles.label}>
+              <p className="w-[20px]">{fields.length - (index + 1)}:</p>
+              <input
+                className={styles.input}
+                type="text"
+                ref={(el) => {
+                  if (el) inputRefs.current[index + 1] = el;
+                }}
+                value={values[index + 1]}
+                onChange={(e) => handleChange(index + 1, e)}
+                placeholder="Enter something..."
+              />
+            </label>
+          ))}
+        </div>
       </form>
     </div>
   );
