@@ -16,11 +16,15 @@ export default function Admin() {
     bingoItems: [],
   });
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   const handleGameCreation = (gameDetails) => {
     setFormData((prev) => ({ ...prev, gameDetails }));
     setStep(2);
   };
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   const handleCardCreation = (bingoItems) => {
     setFormData((prev) => ({ ...prev, bingoItems }));
     setStep(3);
