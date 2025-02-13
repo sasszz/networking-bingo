@@ -9,8 +9,6 @@ import {
   TimeDigits,
 } from "@/components";
 
-import styles from "../page.module.scss";
-
 export default function Admin() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
