@@ -1,18 +1,19 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import styles from "./BingoCardCreationForm.module.scss";
-import { SuggestionButton } from "../SuggestionButton";
-import { Button } from "../Button";
+'use client';
+import { useState, useRef, useEffect } from 'react';
+import styles from './BingoCardCreationForm.module.scss';
+import { SuggestionButton } from '../SuggestionButton';
+import { Button } from '../Button';
+import { BingoItems } from '@/types';
 
 interface BingoCardCreationFormProps {
-  onSubmit: (values: string[]) => void;
+  onSubmit: (values: BingoItems) => void;
 }
 
 export const BingoCardCreationForm = ({
   onSubmit,
 }: BingoCardCreationFormProps) => {
-  const [fields, setFields] = useState([""]);
-  const [values, setValues] = useState([""]);
+  const [fields, setFields] = useState(['']);
+  const [values, setValues] = useState(['']);
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -32,15 +33,15 @@ export const BingoCardCreationForm = ({
   };
 
   const handleNext = () => {
-    if (fields.length < 24 && values[0].trim() !== "") {
-      setFields((prev) => ["", ...prev]);
-      setValues((prev) => ["", ...prev]);
+    if (fields.length < 24 && values[0].trim() !== '') {
+      setFields((prev) => ['', ...prev]);
+      setValues((prev) => ['', ...prev]);
       setCurrentFieldIndex(0);
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       handleNext();
     }
@@ -48,7 +49,7 @@ export const BingoCardCreationForm = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (values.length === 24 && values.every((val) => val.trim() !== "")) {
+    if (values.length === 24 && values.every((val) => val.trim() !== '')) {
       onSubmit(values);
     }
   };
@@ -65,8 +66,8 @@ export const BingoCardCreationForm = ({
               return newValues;
             });
             if (fields.length < 24) {
-              setFields((prevFields) => ["", ...prevFields]);
-              setValues((prevValues) => ["", ...prevValues]);
+              setFields((prevFields) => ['', ...prevFields]);
+              setValues((prevValues) => ['', ...prevValues]);
               setCurrentFieldIndex(0);
             }
           }}
@@ -97,7 +98,7 @@ export const BingoCardCreationForm = ({
               <Button
                 buttonText="Submit"
                 type="submit"
-                disabled={values[0].trim() === ""}
+                disabled={values[0].trim() === ''}
               />
             ) : (
               <Button buttonText="Next" onClick={handleNext} />

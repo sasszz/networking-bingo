@@ -1,26 +1,20 @@
-import { useState, useEffect } from "react";
-import styles from "./BingoGameCreationForm.module.scss";
-import { MiniBingoCard } from "../MiniBingoCard";
-import { Button } from "../Button";
-
-type BingoType = "one-line" | "two-line" | "three-line" | "window" | "blackout";
+import { useState, useEffect } from 'react';
+import styles from './BingoGameCreationForm.module.scss';
+import { MiniBingoCard } from '../MiniBingoCard';
+import { Button } from '../Button';
+import { GameDetails, BingoType } from '@/types';
 
 type BingoGameCreationFormProps = {
-  onNext: (gameDetails: {
-    gameType: BingoType;
-    startTime: string;
-    endTime: string;
-    duration: string;
-  }) => void;
+  onNext: (gamedetails: GameDetails) => void;
 };
 
 export const BingoGameCreationForm = ({
   onNext,
 }: BingoGameCreationFormProps) => {
-  const [gameType, setGameType] = useState<BingoType>("one-line");
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
-  const [duration, setDuration] = useState<string>("180");
+  const [gameType, setGameType] = useState<BingoType>('one-line');
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
+  const [duration, setDuration] = useState<string>('180');
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -38,10 +32,10 @@ export const BingoGameCreationForm = ({
   const formatDateTimeLocal = (date: Date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}T${String(
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}T${String(
       date.getHours()
-    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+    ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
   };
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,7 +47,7 @@ export const BingoGameCreationForm = ({
       const endDate = new Date(startDate.getTime() + minutes * 60000);
       setEndTime(formatDateTimeLocal(endDate));
     } else {
-      setEndTime("");
+      setEndTime('');
     }
   };
 
@@ -141,7 +135,7 @@ export const BingoGameCreationForm = ({
 
         {endTime && (
           <p className="text-sm text-gray-600">
-            Game will end at:{" "}
+            Game will end at:{' '}
             <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
