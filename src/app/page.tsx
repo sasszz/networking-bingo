@@ -14,9 +14,8 @@ import { firebaseConfig } from "@/lib/firebase/config";
 interface User {
   email?: string | null;
 }
-
-function useUserSession(): User | null | undefined {
-  const [user, setUser] = useState<User | null | undefined>(undefined);
+function useUserSession(): User | null {
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,19 +33,20 @@ function useUserSession(): User | null | undefined {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged((authUser) => {
-      setUser(authUser);
+      setUser(authUser ?? null);
     });
 
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    onAuthStateChanged((authUser) => {
-      if (user === undefined) return;
-      if (user?.email !== authUser?.email) {
-        router.refresh();
-      }
-    });
+    if (user !== null) {
+      onAuthStateChanged((authUser) => {
+        if (user?.email !== authUser?.email) {
+          router.refresh();
+        }
+      });
+    }
   }, [user, router]);
 
   return user;
@@ -55,15 +55,9 @@ function useUserSession(): User | null | undefined {
 export default function Home() {
   const user = useUserSession();
 
-  const handleSignOut = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    signOut();
-  };
-
-  const handleSignIn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    signInWithGoogle();
-  };
+  if (user === undefined) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-12 items-center justify-center h-screen">
@@ -76,10 +70,10 @@ export default function Home() {
           <Link href="/player/code">
             <Button buttonText={"Player"} />
           </Link>
-          <Button buttonText={"Sign Out"} onClick={handleSignOut} />
+          <Button buttonText={"Sign Out"} onClick={() => signOut()} />
         </div>
       ) : (
-        <Button buttonText={"Sign In"} onClick={handleSignIn} />
+        <Button buttonText={"Sign In"} onClick={() => signInWithGoogle()} />
       )}
     </div>
   );
