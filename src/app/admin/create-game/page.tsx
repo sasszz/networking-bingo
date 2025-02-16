@@ -1,31 +1,38 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   BingoCard,
   BingoCardCreationForm,
   BingoGameCreationForm,
   Button,
   TimeDigits,
-} from "@/components";
+} from '@/components';
+import { GameDetails, BingoItems } from '@/types';
+
+interface FormData {
+  gameDetails: GameDetails;
+  bingoItems: BingoItems;
+}
 
 export default function Admin() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    gameDetails: {},
+  const [formData, setFormData] = useState<FormData>({
+    gameDetails: {
+      gameType: 'one-line',
+      startTime: '',
+      endTime: '',
+      duration: '',
+    },
     bingoItems: [],
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const handleGameCreation = (gameDetails) => {
+  const handleGameCreation = (gameDetails: GameDetails) => {
     setFormData((prev) => ({ ...prev, gameDetails }));
     setStep(2);
   };
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const handleCardCreation = (bingoItems) => {
+  const handleCardCreation = (bingoItems: BingoItems) => {
     setFormData((prev) => ({ ...prev, bingoItems }));
     setStep(3);
   };
@@ -36,14 +43,14 @@ export default function Admin() {
 
   const handleSubmit = async () => {
     // Send formData to Firestore or backend
-    alert("Submitting Game Data");
-    console.log("Submitting data:", formData);
+    alert('Submitting Game Data');
+    console.log('Submitting data:', formData);
   };
 
   return (
     <div className="flex flex-col items-center justify-start p-4 h-screen">
       <div className="absolute self-start">
-        {step > 1 && <Button onClick={handleBack} buttonText={"Back"} />}
+        {step > 1 && <Button onClick={handleBack} buttonText={'Back'} />}
       </div>
       <h2>Bingo Game Setup</h2>
       <div className="absolute self-end">
@@ -56,7 +63,7 @@ export default function Admin() {
         <div className="flex flex-col items-center justify-center gap-12 text-center pt-12">
           <h2>Networking Bingo</h2>
           <BingoCard items={formData.bingoItems} />
-          <Button onClick={handleSubmit} buttonText={"Finalize Game"} />
+          <Button onClick={handleSubmit} buttonText={'Finalize Game'} />
         </div>
       )}
     </div>
