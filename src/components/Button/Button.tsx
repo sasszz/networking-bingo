@@ -5,7 +5,9 @@ interface ButtonProps {
   buttonText: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  onClick?: any;
+  onClick?:
+    | (() => void)
+    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
 }
 
 export const Button = ({

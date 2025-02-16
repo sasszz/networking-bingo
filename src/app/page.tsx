@@ -6,19 +6,23 @@ import {
   signOut,
   onAuthStateChanged,
 } from "@/lib/firebase/auth";
-
 import { Button } from "@/components";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { firebaseConfig } from "@/lib/firebase/config";
 
-function useUserSession(initialUser) {
-  // The initialUser comes from the server via a server component
-  const [user, setUser] = useState(initialUser);
+interface User {
+  email?: string | null;
+}
+
+interface HomeProps {
+  initialUser: User | null;
+}
+
+function useUserSession(initialUser: User | null): User | null | undefined {
+  const [user, setUser] = useState<User | null | undefined>(initialUser);
   const router = useRouter();
 
-  // Register the service worker that sends auth state back to server
-  // The service worker is built with npm run build-service-worker
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       const serializedFirebaseConfig = encodeURIComponent(
@@ -38,33 +42,30 @@ function useUserSession(initialUser) {
     });
 
     return () => unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     onAuthStateChanged((authUser) => {
       if (user === undefined) return;
-
-      // refresh when user changed to ease testing
       if (user?.email !== authUser?.email) {
         router.refresh();
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return user;
 }
 
-export default function Home({ initialUser }) {
+export default function Home({ initialUser }: HomeProps) {
   const user = useUserSession(initialUser);
 
-  const handleSignOut = (event) => {
+  const handleSignOut = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     signOut();
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     signInWithGoogle();
   };
