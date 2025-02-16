@@ -15,12 +15,8 @@ interface User {
   email?: string | null;
 }
 
-interface HomeProps {
-  initialUser: User | null;
-}
-
-function useUserSession(initialUser: User | null): User | null | undefined {
-  const [user, setUser] = useState<User | null | undefined>(initialUser);
+function useUserSession(): User | null | undefined {
+  const [user, setUser] = useState<User | null | undefined>(undefined);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,14 +47,13 @@ function useUserSession(initialUser: User | null): User | null | undefined {
         router.refresh();
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, router]);
 
   return user;
 }
 
-export default function Home({ initialUser }: HomeProps) {
-  const user = useUserSession(initialUser);
+export default function Home() {
+  const user = useUserSession();
 
   const handleSignOut = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
