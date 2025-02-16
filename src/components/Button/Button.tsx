@@ -5,7 +5,7 @@ interface ButtonProps {
   buttonText: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: any;
 }
 
 export const Button = ({
