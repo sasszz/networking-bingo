@@ -13,6 +13,7 @@ import { firebaseConfig } from "@/lib/firebase/config";
 
 interface User {
   email?: string | null;
+  displayName?: string | null;
 }
 function useUserSession(): User | null {
   const [user, setUser] = useState<User | null>(null);
@@ -55,21 +56,28 @@ function useUserSession(): User | null {
 export default function Home() {
   const user = useUserSession();
 
+  console.log({ user });
+  // console.log(user.toJSON());
+  console.log(user?.displayName);
+
   if (user === undefined) {
     return null;
   }
 
   return (
-    <div className="flex flex-col gap-12 items-center justify-center h-screen">
+    <div className="flex flex-col gap-12 items-center justify-start h-screen">
       <h2>Networking Bingo</h2>
       {user ? (
-        <div className="flex flex-row gap-4">
-          <Link href="/admin">
-            <Button buttonText={"Admin"} />
-          </Link>
-          <Link href="/player/code">
-            <Button buttonText={"Player"} />
-          </Link>
+        <div className="flex flex-col items-center justify-center gap-12">
+          <p>Welcome {user.displayName}</p>
+          <div className="flex flex-row gap-4">
+            <Link href="/admin">
+              <Button buttonText={"Admin"} />
+            </Link>
+            <Link href="/player/code">
+              <Button buttonText={"Player"} />
+            </Link>
+          </div>
           <Button buttonText={"Sign Out"} onClick={() => signOut()} />
         </div>
       ) : (

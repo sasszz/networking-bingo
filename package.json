@@ -19,7 +19,8 @@
     "react-dom": "^19.0.0",
     "react-fitty": "^1.0.1",
     "react-qr-code": "^2.0.15",
-    "sass": "^1.83.4"
+    "sass": "^1.83.4",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
