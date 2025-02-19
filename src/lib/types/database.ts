@@ -6,8 +6,19 @@ export type User = {
   createdAt: Date;
 };
 
+export interface FormData
+  extends Omit<
+    Game,
+    "gameId" | "gameCode" | "adminId" | "createdAt" | "status"
+  > {
+  bingoItems?: string[];
+  gameId?: string;
+  gameCode?: string;
+  status?: "scheduled" | "active" | "ended";
+}
+
 export type Game = {
-  gameId: string;
+  gameId?: string;
   adminId: string; // Reference to User.userId
   gameName: string;
   gameCode: string;
@@ -24,7 +35,7 @@ export type Game = {
 export type BingoCard = {
   bingoCardId: string;
   prompts: string[];
-  createdAt: Date;
+  createdAt?: Date;
 };
 
 export type BingoCardButton = {

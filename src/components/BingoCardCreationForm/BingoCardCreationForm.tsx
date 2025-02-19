@@ -1,47 +1,50 @@
-'use client';
-import { useState, useRef, useEffect } from 'react';
-import styles from './BingoCardCreationForm.module.scss';
-import { SuggestionButton } from '../SuggestionButton';
-import { Button } from '../Button';
-import { BingoItems } from '@/types';
+"use client";
 
-interface BingoCardCreationFormProps {
-  onSubmit: (values: BingoItems) => void;
-}
+import { useState, useRef, useEffect } from "react";
+import { useGame } from "@/lib/contexts/GameContext";
+import styles from "./BingoCardCreationForm.module.scss";
+import { SuggestionButton } from "../SuggestionButton";
 
 export const BingoCardCreationForm = ({
   onSubmit,
-}: BingoCardCreationFormProps) => {
-  const [fields, setFields] = useState(['']);
-  const [values, setValues] = useState(['']);
+}: {
+  onSubmit: (bingoItems: string[]) => void;
+}) => {
+  const { bingoCardData, setBingoCardData } = useGame();
+  const [values, setValues] = useState<string[]>(bingoCardData.prompts || [""]);
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Sync `bingoCardData` whenever `values` changes
+  useEffect(() => {
+    setBingoCardData((prev) => ({
+      ...prev,
+      prompts: values,
+      createdAt: prev.createdAt || new Date(),
+    }));
+  }, [values, setBingoCardData]);
 
   useEffect(() => {
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
-  }, [fields]);
+  }, [values]);
 
-  const handleChange = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const newValues = [...values];
     newValues[index] = event.target.value;
     setValues(newValues);
   };
 
   const handleNext = () => {
-    if (fields.length < 24 && values[0].trim() !== '') {
-      setFields((prev) => ['', ...prev]);
-      setValues((prev) => ['', ...prev]);
+    if (values.length < 24 && values[0].trim() !== "") {
+      setValues((prev) => ["", ...prev]);
       setCurrentFieldIndex(0);
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       handleNext();
     }
@@ -49,7 +52,7 @@ export const BingoCardCreationForm = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (values.length === 24 && values.every((val) => val.trim() !== '')) {
+    if (values.length === 24 && values.every((val) => val.trim() !== "")) {
       onSubmit(values);
     }
   };
@@ -65,23 +68,18 @@ export const BingoCardCreationForm = ({
               newValues[currentFieldIndex] = suggestion;
               return newValues;
             });
-            if (fields.length < 24) {
-              setFields((prevFields) => ['', ...prevFields]);
-              setValues((prevValues) => ['', ...prevValues]);
+            if (values.length < 24) {
+              setValues((prevValues) => ["", ...prevValues]);
               setCurrentFieldIndex(0);
             }
           }}
         />
       </div>
 
-      <form
-        className={styles.form}
-        onKeyDown={handleKeyDown}
-        onSubmit={handleSubmit}
-      >
+      <form className={styles.form} onKeyDown={handleKeyDown} onSubmit={handleSubmit}>
         <div className={styles.inputRow}>
           <label className={styles.label}>
-            <p className="w-[20px]">{fields.length}:</p>
+            <p className="w-[20px]">{values.length}:</p>
             <input
               className={styles.input}
               type="text"
@@ -93,23 +91,12 @@ export const BingoCardCreationForm = ({
               placeholder="Enter something..."
             />
           </label>
-          <div className="w-[100px]">
-            {fields.length === 24 ? (
-              <Button
-                buttonText="Submit"
-                type="submit"
-                disabled={values[0].trim() === ''}
-              />
-            ) : (
-              <Button buttonText="Next" onClick={handleNext} />
-            )}
-          </div>
         </div>
         <div className={styles.prompts}>
           <p>bingo card prompts</p>
-          {fields.slice(1).map((_, index) => (
+          {values.slice(1).map((_, index) => (
             <label key={index + 1} className={styles.label}>
-              <p className="w-[20px]">{fields.length - (index + 1)}:</p>
+              <p className="w-[20px]">{values.length - (index + 1)}:</p>
               <input
                 className={styles.input}
                 type="text"

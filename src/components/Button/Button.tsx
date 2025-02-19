@@ -5,6 +5,7 @@ interface ButtonProps {
   buttonText: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  destructive?: boolean;
   onClick?:
     | (() => void)
     | ((event: React.MouseEvent<HTMLButtonElement>) => void);
@@ -14,6 +15,7 @@ export const Button = ({
   buttonText,
   type,
   disabled,
+  destructive,
   onClick,
 }: ButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
@@ -33,7 +35,10 @@ export const Button = ({
       onTouchEnd={handleRelease}
       className={`${styles.main} ${
         isPressed ? styles.pressed : styles.beforePressed
-      } ${disabled ? styles.disabled : ""}`}
+      } 
+      ${disabled ? styles.disabled : ""} ${
+        destructive ? styles.destructive : ""
+      }`}
     >
       {buttonText}
     </button>

@@ -1,23 +1,23 @@
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  Timestamp,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "@/lib/firebase/config";
-import { Game } from "@/lib/types/database";
-import { v4 as uuidv4 } from "uuid";
-
-function generateGameCode(): string {
-  return Array.from({ length: 6 }, () =>
-    String.fromCharCode(65 + Math.floor(Math.random() * 26))
-  ).join("");
-}
+import { BingoCard, Game } from "@/lib/types/database";
 
 export async function addBingoGame({
   gameName,
   startTime,
   duration,
+  gameCode,
   players = [],
   winningType,
-  bingoCardId,
-}: Omit<Game, "status" | "createdAt" | "gameId" | "gameCode" | "adminId">) {
+  bingoCardId = "",
+}: Omit<Game, "status" | "createdAt" | "gameId" | "adminId">) {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -41,12 +41,9 @@ export async function addBingoGame({
       status = "ended";
     }
 
-    const gameId = uuidv4();
-    const gameCode = generateGameCode();
-
+    // Add game to Firestore and use the generated document ID as gameId
     const docRef = await addDoc(collection(db, "bingoGames"), {
-      gameId,
-      adminId, // Set from authenticated user
+      adminId,
       gameName,
       gameCode,
       status,
@@ -58,11 +55,51 @@ export async function addBingoGame({
       createdAt: Timestamp.now(),
     });
 
-    console.log(docRef.id);
-    
-    return { gameId, gameCode };
+    console.log("Game created with ID:", docRef.id);
+
+    return { gameId: docRef.id, gameCode };
   } catch (error) {
-    console.error("Error adding bingo game: ", error);
+    console.error("Error adding bingo game:", error);
     throw new Error("Failed to create bingo game");
+  }
+}
+
+export async function addBingoCard(prompts: string[]): Promise<BingoCard> {
+  try {
+    if (prompts.length !== 24) {
+      throw new Error("A bingo card must have exactly 24 prompts");
+    }
+
+    // Add bingo card to Firestore and use Firestore-generated ID
+    const docRef = await addDoc(collection(db, "bingoCards"), {
+      prompts,
+      createdAt: Timestamp.now(),
+    });
+
+    console.log("Bingo card created with ID:", docRef.id);
+
+    return {
+      bingoCardId: docRef.id,
+      prompts,
+      createdAt: new Date(),
+    };
+  } catch (error) {
+    console.error("Error adding bingo card:", error);
+    throw new Error("Failed to create bingo card");
+  }
+}
+
+export async function updateGameWithBingoCard(
+  gameId: string,
+  bingoCardId: string
+) {
+  try {
+    const gameRef = doc(db, "bingoGames", gameId);
+    await updateDoc(gameRef, { bingoCardId });
+
+    console.log(`Game ${gameId} updated with bingoCardId: ${bingoCardId}`);
+  } catch (error) {
+    console.error("Error updating game with bingo card:", error);
+    throw new Error("Failed to update game");
   }
 }

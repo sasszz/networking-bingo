@@ -1,41 +1,56 @@
-import { useState, useEffect } from 'react';
-import styles from './BingoGameCreationForm.module.scss';
-import { MiniBingoCard } from '../MiniBingoCard';
-import { Button } from '../Button';
-import { GameDetails, BingoType } from '@/types';
+"use client";
 
-type BingoGameCreationFormProps = {
-  onNext: (gamedetails: GameDetails) => void;
-};
+import { useState, useEffect } from "react";
+import { useGame } from "@/lib/contexts/GameContext";
+import styles from "./BingoGameCreationForm.module.scss";
+import { MiniBingoCard } from "../MiniBingoCard";
+import { Game } from "@/lib/types/database";
+
+export function generateGameCode(): string {
+  return Array.from({ length: 6 }, () =>
+    String.fromCharCode(65 + Math.floor(Math.random() * 26))
+  ).join("");
+}
 
 export const BingoGameCreationForm = ({
   onNext,
-}: BingoGameCreationFormProps) => {
-  const [gameType, setGameType] = useState<BingoType>('one-line');
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
-  const [duration, setDuration] = useState<string>('180');
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+}: {
+  onNext: (gameDetails: Partial<Game>) => void;
+}) => {
+  const { gameData, setGameData } = useGame();
+  console.log({ gameData });
+
+  const [gameType, setGameType] = useState(gameData.winningType || "one-line");
+  const [startTime, setStartTime] = useState<string>(
+    gameData.startTime
+      ? new Date(gameData.startTime).toISOString().slice(0, 16)
+      : ""
+  );
+  const [endTime, setEndTime] = useState<string>(
+    gameData.endTime
+      ? new Date(gameData.endTime).toISOString().slice(0, 16)
+      : ""
+  );
+  const [duration, setDuration] = useState<string>(
+    String(gameData.duration || 180)
+  );
+  const [gameName, setGameName] = useState(gameData.gameName || "");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    const now = new Date();
-    now.setMinutes(0, 0, 0);
-    now.setHours(now.getHours() + 1);
-
-    const formattedStartTime = formatDateTimeLocal(now);
-    setStartTime(formattedStartTime);
-
-    const defaultEndTime = new Date(now.getTime() + 180 * 60000);
-    setEndTime(formatDateTimeLocal(defaultEndTime));
-  }, []);
+    if (!gameData.gameCode) {
+      const newGameCode = generateGameCode();
+      setGameData((prev) => ({ ...prev, gameCode: newGameCode }));
+    }
+  }, [gameData.gameCode, setGameData]);
 
   const formatDateTimeLocal = (date: Date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      '0'
-    )}-${String(date.getDate()).padStart(2, '0')}T${String(
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}T${String(
       date.getHours()
-    ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
   };
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,7 +62,7 @@ export const BingoGameCreationForm = ({
       const endDate = new Date(startDate.getTime() + minutes * 60000);
       setEndTime(formatDateTimeLocal(endDate));
     } else {
-      setEndTime('');
+      setEndTime("");
     }
   };
 
@@ -55,12 +70,19 @@ export const BingoGameCreationForm = ({
     e.preventDefault();
     setIsSubmitted(true);
 
-    const gameDetails = {
-      gameType,
-      startTime,
-      endTime,
-      duration,
+    const gameDetails: Partial<Game> = {
+      gameName,
+      winningType: gameType as Game["winningType"],
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      duration: parseInt(duration, 10),
+      gameCode: gameData.gameCode,
     };
+
+    setGameData((prev) => ({
+      ...prev,
+      ...gameDetails,
+    }));
 
     onNext(gameDetails);
   };
@@ -74,6 +96,8 @@ export const BingoGameCreationForm = ({
           <input
             className={styles.input}
             type="text"
+            value={gameName}
+            onChange={(e) => setGameName(e.target.value)}
             placeholder="Enter a name..."
             disabled={isSubmitted}
           />
@@ -83,7 +107,7 @@ export const BingoGameCreationForm = ({
           <select
             className={styles.input}
             value={gameType}
-            onChange={(e) => setGameType(e.target.value as BingoType)}
+            onChange={(e) => setGameType(e.target.value as Game["winningType"])}
             disabled={isSubmitted}
           >
             <option value="one-line">One line</option>
@@ -132,16 +156,13 @@ export const BingoGameCreationForm = ({
             <option value="360">6 hours</option>
           </select>
         </label>
-
         {endTime && (
           <p className="text-sm text-gray-600">
-            Game will end at:{' '}
+            Game will end at:{" "}
             <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
-        <div className="self-end pt-4">
-          <Button buttonText="Next" type="submit" />
-        </div>
+        <p>Game Code: {gameData.gameCode || "Generating..."}</p>
       </form>
     </div>
   );

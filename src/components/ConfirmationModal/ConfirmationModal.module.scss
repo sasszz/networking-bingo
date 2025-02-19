@@ -1,0 +1,49 @@
+.opacityBackground {
+  @apply absolute
+    inset-0
+    flex
+    items-start
+    justify-start
+    lg:justify-center
+    bg-black
+    bg-opacity-30
+    z-50;
+}
+
+.main {
+  @apply bg-white
+    relative
+    border-2
+    border-black
+    p-8
+    flex
+    flex-col
+    items-center
+    justify-start
+    gap-4
+    rounded-lg
+    shadow-lg
+    w-full
+    h-screen
+    lg:h-[600px]
+    lg:w-[600px]
+    text-center
+    overflow-hidden;
+}
+
+.close {
+  @apply absolute
+    top-8
+    right-8;
+}
+
+.centerBody {
+  @apply w-full
+    h-screen
+    gap-8
+    flex
+    flex-col
+    pt-16
+    items-center
+    justify-start;
+}

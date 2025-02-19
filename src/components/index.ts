@@ -4,12 +4,14 @@ export * from "./BingoCard";
 export * from "./BingoCardCreationForm";
 export * from "./BingoGameCreationForm";
 export * from "./Button";
+export * from "./ConfirmationModal";
 export * from "./EmailAutoComplete";
 export * from "./GameCode";
+export * from "./GameDisplay";
 export * from "./GameTime";
 export * from "./IconButton";
-export * from "./Leaderboard"
-export * from "./LeaderboardPlayerTile"
+export * from "./Leaderboard";
+export * from "./LeaderboardPlayerTile";
 export * from "./MiniBingoCard";
 export * from "./ShareGameModal";
 export * from "./SuggestionButton";
