@@ -1,68 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useGame } from "@/lib/contexts/GameContext";
 import styles from "./BingoGameCreationForm.module.scss";
 import { MiniBingoCard } from "../MiniBingoCard";
 import { Game } from "@/lib/types/database";
 
-export function generateGameCode(): string {
-  return Array.from({ length: 6 }, () =>
-    String.fromCharCode(65 + Math.floor(Math.random() * 26))
-  ).join("");
-}
-
-export const BingoGameCreationForm = ({
-  onNext,
-}: {
-  onNext: (gameDetails: Partial<Game>) => void;
-}) => {
+export const BingoGameCreationForm = ({ onNext }: { onNext: (gameDetails: Partial<Game>) => void }) => {
   const { gameData, setGameData } = useGame();
   console.log({ gameData });
 
   const [gameType, setGameType] = useState(gameData.winningType || "one-line");
   const [startTime, setStartTime] = useState<string>(
-    gameData.startTime
-      ? new Date(gameData.startTime).toISOString().slice(0, 16)
-      : ""
+    gameData.startTime ? new Date(gameData.startTime).toISOString().slice(0, 16) : ""
   );
   const [endTime, setEndTime] = useState<string>(
-    gameData.endTime
-      ? new Date(gameData.endTime).toISOString().slice(0, 16)
-      : ""
+    gameData.endTime ? new Date(gameData.endTime).toISOString().slice(0, 16) : ""
   );
-  const [duration, setDuration] = useState<string>(
-    String(gameData.duration || 180)
-  );
+  const [duration, setDuration] = useState<string>(String(gameData.duration || 180));
   const [gameName, setGameName] = useState(gameData.gameName || "");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  useEffect(() => {
-    if (!gameData.gameCode) {
-      const newGameCode = generateGameCode();
-      setGameData((prev) => ({ ...prev, gameCode: newGameCode }));
-    }
-  }, [gameData.gameCode, setGameData]);
-
   const formatDateTimeLocal = (date: Date) => {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}T${String(
-      date.getHours()
-    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+      date.getDate()
+    ).padStart(2, "0")}T${String(date.getHours()).padStart(2, "0")}:${String(
+      date.getMinutes()
+    ).padStart(2, "0")}`;
   };
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const minutes = parseInt(e.target.value, 10);
     setDuration(e.target.value);
-
+    setGameData((prev) => ({ ...prev, duration: minutes }));
+  
     if (startTime) {
       const startDate = new Date(startTime);
       const endDate = new Date(startDate.getTime() + minutes * 60000);
       setEndTime(formatDateTimeLocal(endDate));
+      setGameData((prev) => ({ ...prev, endTime: endDate })); // Store as Date
     } else {
       setEndTime("");
+      setGameData((prev) => ({ ...prev, endTime: undefined })); // Ensure type matches
     }
   };
 
@@ -79,11 +58,7 @@ export const BingoGameCreationForm = ({
       gameCode: gameData.gameCode,
     };
 
-    setGameData((prev) => ({
-      ...prev,
-      ...gameDetails,
-    }));
-
+    setGameData((prev) => ({ ...prev, ...gameDetails }));
     onNext(gameDetails);
   };
 
@@ -97,17 +72,24 @@ export const BingoGameCreationForm = ({
             className={styles.input}
             type="text"
             value={gameName}
-            onChange={(e) => setGameName(e.target.value)}
+            onChange={(e) => {
+              setGameName(e.target.value);
+              setGameData((prev) => ({ ...prev, gameName: e.target.value }));
+            }}
             placeholder="Enter a name..."
             disabled={isSubmitted}
           />
         </label>
+
         <label className={styles.label}>
           Game Winning Type
           <select
             className={styles.input}
             value={gameType}
-            onChange={(e) => setGameType(e.target.value as Game["winningType"])}
+            onChange={(e) => {
+              setGameType(e.target.value as Game["winningType"]);
+              setGameData((prev) => ({ ...prev, winningType: e.target.value as Game["winningType"] }));
+            }}
             disabled={isSubmitted}
           >
             <option value="one-line">One line</option>
@@ -126,12 +108,13 @@ export const BingoGameCreationForm = ({
             value={startTime}
             onChange={(e) => {
               setStartTime(e.target.value);
+              setGameData((prev) => ({ ...prev, startTime: new Date(e.target.value) }));
+
               if (duration) {
                 const startDate = new Date(e.target.value);
-                const endDate = new Date(
-                  startDate.getTime() + parseInt(duration, 10) * 60000
-                );
+                const endDate = new Date(startDate.getTime() + parseInt(duration, 10) * 60000);
                 setEndTime(formatDateTimeLocal(endDate));
+                setGameData((prev) => ({ ...prev, endTime: endDate }));
               }
             }}
             disabled={isSubmitted}
@@ -156,13 +139,13 @@ export const BingoGameCreationForm = ({
             <option value="360">6 hours</option>
           </select>
         </label>
+
         {endTime && (
           <p className="text-sm text-gray-600">
-            Game will end at:{" "}
-            <strong>{new Date(endTime).toLocaleString()}</strong>
+            Game will end at: <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
-        <p>Game Code: {gameData.gameCode || "Generating..."}</p>
+        <p className="pt-12">Game Code: {gameData.gameCode || "Generating..."}</p>
       </form>
     </div>
   );

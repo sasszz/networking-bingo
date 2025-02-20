@@ -7,11 +7,15 @@ import { Button } from "../Button";
 import { IconButton, SvgIcons } from "../IconButton";
 import { handleShare } from "../utilities";
 
-export const ShareGameModal = () => {
+interface ShareGameModalProps {
+  gameCode?: string;
+}
+
+
+export const ShareGameModal = ({ gameCode }: ShareGameModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const testLink = "http://localhost:3000/player/card";
-  const testCode = "abcdef";
 
   return (
     <div>
@@ -35,8 +39,9 @@ export const ShareGameModal = () => {
               </div>
               <IconButton
                 icon={SvgIcons.Share}
-                onClick={() => handleShare(testCode)}
+                onClick={() => handleShare(gameCode)}
               />
+              <p>Game Code: {gameCode}</p>
             </div>
           </div>
         </div>

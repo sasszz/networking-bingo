@@ -3,6 +3,12 @@
 import { createContext, useContext, useState } from "react";
 import { Game, BingoCard } from "@/lib/types/database";
 
+export function generateGameCode(): string {
+  return Array.from({ length: 6 }, () =>
+    String.fromCharCode(65 + Math.floor(Math.random() * 26))
+  ).join("");
+}
+
 interface GameContextType {
   step: number;
   setStep: (step: number) => void;
@@ -17,19 +23,17 @@ const getInitialTimes = () => {
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(10, 0, 0, 0);
 
-  const endTime = new Date(tomorrow.getTime() + 180 * 60000); // Default 3-hour duration
-
+  const endTime = new Date(tomorrow.getTime() + 180 * 60000);
   return { startTime: tomorrow, endTime };
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
-
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const { startTime, endTime } = getInitialTimes();
   const [step, setStep] = useState(1);
   const [gameData, setGameData] = useState<Partial<Game>>({
     gameName: "",
-    gameCode: "",
+    gameCode: generateGameCode(),
     status: "scheduled",
     startTime,
     endTime,
@@ -56,6 +60,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     </GameContext.Provider>
   );
 };
+
 
 export const useGame = () => {
   const context = useContext(GameContext);
