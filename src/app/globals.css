@@ -5,3 +5,28 @@
 html {
   @apply lowercase;
 }
+
+@media (max-width: 1024px) 
+  and (orientation: landscape) 
+  and (hover: none) {
+
+  body {
+    @apply 
+      fixed 
+      top-0 
+      left-0 
+      w-screen 
+      h-screen 
+      overflow-hidden 
+      flex 
+      items-center 
+      justify-center 
+      rotate-90;
+
+  }
+
+  .flip {
+    @apply rotate-[270deg];
+  }
+
+}
