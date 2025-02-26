@@ -24,6 +24,7 @@ interface IconButtonProps {
   text?: string;
   buttonOnly?: boolean;
   className?: string;
+  type?: "button" | "submit" | "reset";
 }
 export const IconButton = ({
   icon,
@@ -34,6 +35,7 @@ export const IconButton = ({
   text,
   buttonOnly,
   className,
+  type,
 }: IconButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const handlePress = () => setIsPressed(true);
@@ -42,6 +44,7 @@ export const IconButton = ({
   return (
     <>
       <button
+        type={type ? type : "button"}
         className={`${disabled ? styles.disabled : ""} ${className || ""}`}
         onClick={onClick}
         disabled={disabled}

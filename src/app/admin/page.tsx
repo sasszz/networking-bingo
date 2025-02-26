@@ -6,7 +6,7 @@ import { Button } from "@/components";
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-12 items-center justify-center h-screen">
+    <div className="flex flex-col gap-12 items-center justify-start h-screen">
       <h2>Admin Page</h2>
       <div className="flex flex-col gap-4">
         <Link href="/admin/create-game">

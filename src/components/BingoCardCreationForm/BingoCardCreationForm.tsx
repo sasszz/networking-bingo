@@ -62,6 +62,7 @@ export const BingoCardCreationForm: React.FC<BingoCardCreationFormProps> = ({
   }, [values, setBingoCardData]);
 
   const handleToggleEdit = (index: number) => {
+    console.log("handleToggleEdit");
     setEditableFields((prev) => {
       const newFields = [...prev];
       newFields[index] = !newFields[index];
@@ -114,7 +115,6 @@ export const BingoCardCreationForm: React.FC<BingoCardCreationFormProps> = ({
     setValues(randomPrompts);
     setEditableFields(new Array(24).fill(false));
   };
-  
 
   return (
     <div className={styles.main}>
@@ -134,9 +134,14 @@ export const BingoCardCreationForm: React.FC<BingoCardCreationFormProps> = ({
               placeholder="Enter something..."
             />
           </label>
-          <IconButton icon={SvgIcons.Die} onClick={handleUseSuggestion} />
+          <IconButton
+            icon={SvgIcons.Die}
+            onClick={handleUseSuggestion}
+            type="button"
+          />
         </div>
         <Button
+          type="button"
           buttonText="Generate 24 Random prompts"
           onClick={handleGenerateRandomPrompts}
         />
@@ -153,6 +158,7 @@ export const BingoCardCreationForm: React.FC<BingoCardCreationFormProps> = ({
                 disabled={!editableFields[index + 1]}
               />
               <IconButton
+                type="button"
                 icon={
                   editableFields[index + 1] ? SvgIcons.Unlock : SvgIcons.Lock
                 }
