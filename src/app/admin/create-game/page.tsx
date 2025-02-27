@@ -11,11 +11,7 @@ import {
   TimeDigits,
   ConfirmationModal,
 } from "@/components";
-import {
-  addBingoCard,
-  addBingoGame,
-  updateGameWithBingoCard,
-} from "@/lib/firebase/calls";
+import { addBingoGame } from "@/lib/firebase/calls";
 
 export default function CreateGamePage(): JSX.Element {
   return (
@@ -79,14 +75,10 @@ function GameContent(): JSX.Element {
 
   const handleFinalSubmit = async () => {
     try {
-      setIsSubmitting(true); // Freeze screen
+      setIsSubmitting(true);
       console.log("Submitting game data...");
 
-      // Step 1: Create Bingo Card
-      const bingoCard = await addBingoCard(bingoCardData.prompts ?? []);
-
-      // Step 2: Create Bingo Game and link the Bingo Card
-      const gameResponse = await addBingoGame({
+      await addBingoGame({
         gameName: gameData.gameName ?? "",
         //@ts-expect-error types issue
         startTime: gameData.startTime ?? new Date().toISOString(),
@@ -95,14 +87,11 @@ function GameContent(): JSX.Element {
         players: gameData.players || [],
         //@ts-expect-error types issue
         winningType: gameData.winningType ?? "",
-        bingoCardId: bingoCard.bingoCardId,
+        prompts: bingoCardData.prompts ?? [],
       });
 
-      // Step 3: Update the created game with Bingo Card ID
-      await updateGameWithBingoCard(gameResponse.gameId, bingoCard.bingoCardId);
-
-      console.log("Game and Bingo Card successfully linked!");
-      router.push(`/admin`);
+      console.log("Game successfully created with Bingo Card!");
+      router.push(`/admin/create-game/success`);
     } catch (error) {
       console.error("Error submitting game:", error);
     } finally {

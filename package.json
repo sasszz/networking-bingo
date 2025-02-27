@@ -16,6 +16,7 @@
     "framer-motion": "^12.4.2",
     "next": "15.1.6",
     "react": "^19.0.0",
+    "react-confetti-boom": "^1.1.2",
     "react-dom": "^19.0.0",
     "react-fitty": "^1.0.1",
     "react-qr-code": "^2.0.15",

@@ -55,12 +55,7 @@ export const GameDisplay = () => {
                         : `${gameData.duration} minutes`,
                     ]
                   : null,
-                [
-                  "Start Time",
-                  gameData.startTime
-                    ? new Date(gameData.startTime).toLocaleString()
-                    : "Not set",
-                ],
+                ["Start Time", gameData.startTime?.toLocaleString()],
                 [
                   "End Time",
                   gameData.endTime

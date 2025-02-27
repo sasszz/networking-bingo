@@ -6,42 +6,53 @@ import styles from "./BingoGameCreationForm.module.scss";
 import { MiniBingoCard } from "../MiniBingoCard";
 import { Game } from "@/lib/types/database";
 
-export const BingoGameCreationForm = ({ onNext }: { onNext: (gameDetails: Partial<Game>) => void }) => {
+export const BingoGameCreationForm = ({
+  onNext,
+}: {
+  onNext: (gameDetails: Partial<Game>) => void;
+}) => {
   const { gameData, setGameData } = useGame();
   console.log({ gameData });
 
+  const formatDateTimeLocal = (date: Date) => {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}T${String(
+      date.getHours()
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+  };
+
   const [gameType, setGameType] = useState(gameData.winningType || "one-line");
   const [startTime, setStartTime] = useState<string>(
-    gameData.startTime ? new Date(gameData.startTime).toISOString().slice(0, 16) : ""
+    gameData.startTime
+      ? formatDateTimeLocal(new Date(gameData.startTime))
+      : formatDateTimeLocal(new Date())
   );
   const [endTime, setEndTime] = useState<string>(
-    gameData.endTime ? new Date(gameData.endTime).toISOString().slice(0, 16) : ""
+    gameData.endTime ? formatDateTimeLocal(new Date(gameData.endTime)) : ""
   );
-  const [duration, setDuration] = useState<string>(String(gameData.duration || 180));
+
+  const [duration, setDuration] = useState<string>(
+    String(gameData.duration || 180)
+  );
+
   const [gameName, setGameName] = useState(gameData.gameName || "");
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const formatDateTimeLocal = (date: Date) => {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
-      date.getDate()
-    ).padStart(2, "0")}T${String(date.getHours()).padStart(2, "0")}:${String(
-      date.getMinutes()
-    ).padStart(2, "0")}`;
-  };
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const minutes = parseInt(e.target.value, 10);
     setDuration(e.target.value);
     setGameData((prev) => ({ ...prev, duration: minutes }));
-  
+
     if (startTime) {
       const startDate = new Date(startTime);
       const endDate = new Date(startDate.getTime() + minutes * 60000);
       setEndTime(formatDateTimeLocal(endDate));
-      setGameData((prev) => ({ ...prev, endTime: endDate })); // Store as Date
+      setGameData((prev) => ({ ...prev, endTime: endDate }));
     } else {
       setEndTime("");
-      setGameData((prev) => ({ ...prev, endTime: undefined })); // Ensure type matches
+      setGameData((prev) => ({ ...prev, endTime: undefined }));
     }
   };
 
@@ -88,7 +99,10 @@ export const BingoGameCreationForm = ({ onNext }: { onNext: (gameDetails: Partia
             value={gameType}
             onChange={(e) => {
               setGameType(e.target.value as Game["winningType"]);
-              setGameData((prev) => ({ ...prev, winningType: e.target.value as Game["winningType"] }));
+              setGameData((prev) => ({
+                ...prev,
+                winningType: e.target.value as Game["winningType"],
+              }));
             }}
             disabled={isSubmitted}
           >
@@ -108,11 +122,13 @@ export const BingoGameCreationForm = ({ onNext }: { onNext: (gameDetails: Partia
             value={startTime}
             onChange={(e) => {
               setStartTime(e.target.value);
-              setGameData((prev) => ({ ...prev, startTime: new Date(e.target.value) }));
+              const localDate = new Date(e.target.value);
+              setGameData((prev) => ({ ...prev, startTime: localDate }));
 
               if (duration) {
-                const startDate = new Date(e.target.value);
-                const endDate = new Date(startDate.getTime() + parseInt(duration, 10) * 60000);
+                const endDate = new Date(
+                  localDate.getTime() + parseInt(duration, 10) * 60000
+                );
                 setEndTime(formatDateTimeLocal(endDate));
                 setGameData((prev) => ({ ...prev, endTime: endDate }));
               }
@@ -142,10 +158,13 @@ export const BingoGameCreationForm = ({ onNext }: { onNext: (gameDetails: Partia
 
         {endTime && (
           <p className="text-sm text-gray-600">
-            Game will end at: <strong>{new Date(endTime).toLocaleString()}</strong>
+            Game will end at:{" "}
+            <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
-        <p className="pt-12">Game Code: {gameData.gameCode || "Generating..."}</p>
+        <p className="pt-12">
+          Game Code: {gameData.gameCode || "Generating..."}
+        </p>
       </form>
     </div>
   );
