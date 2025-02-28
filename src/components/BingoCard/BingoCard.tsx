@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { BingoButton } from '../BingoButton';
-import styles from './BingoCard.module.scss';
-import { ShareGameModal } from '../ShareGameModal';
-import Link from 'next/link';
-import { Button } from '../Button';
-import { BingoItems } from '@/types';
+import { useState } from "react";
+import { BingoButton } from "../BingoButton";
+import styles from "./BingoCard.module.scss";
+import { ShareGameModal } from "../ShareGameModal";
+import Link from "next/link";
+import { Button } from "../Button";
+import { BingoItems } from "@/types";
 
 interface BingoCardProps {
   items: BingoItems;
+  gameCode: string;
 }
 
-export const BingoCard = ({ items }: BingoCardProps) => {
-  const updatedItems = [...items.slice(0, 12), 'FREE', ...items.slice(12)];
+export const BingoCard = ({ items, gameCode }: BingoCardProps) => {
+  const updatedItems = [...items.slice(0, 12), "FREE", ...items.slice(12)];
   const [checked, setChecked] = useState<boolean[]>(
     Array.from({ length: 25 }, (_, i) => i === 12)
   );
@@ -44,7 +45,7 @@ export const BingoCard = ({ items }: BingoCardProps) => {
   return (
     <div
       className={`${styles.main} ${
-        checkForBingo() ? styles.bingoBackground : ''
+        checkForBingo() ? styles.bingoBackground : ""
       }`}
     >
       <div className={styles.card}>
@@ -53,15 +54,15 @@ export const BingoCard = ({ items }: BingoCardProps) => {
             key={index}
             label={item}
             isChecked={checked[index]}
-            isFree={item === 'FREE'}
+            isFree={item === "FREE"}
             onClick={() => toggleSquare(index)}
           />
         ))}
       </div>
       <div className={styles.menu}>
-        <ShareGameModal />
+        <ShareGameModal gameCode={gameCode} />
         <Link href="/admin/live-games/leaderboard/1">
-          <Button buttonText={'View Leaderboard'} />
+          <Button buttonText={"View Leaderboard"} />
         </Link>
       </div>
       {checkForBingo() && <p className={styles.bingo}>bingo!</p>}

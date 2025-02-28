@@ -72,11 +72,18 @@ export const GameTime: React.FC<GameTimeProps> = ({ startTime, endTime }) => {
 
 export const TimeDigits: React.FC<{ value: string }> = ({ value }) => (
   <div className={styles.timeDigits}>
-    {value.split("").map((digit, index) => (
-      <TimeBox key={index} value={digit} />
-    ))}
+    {value.split("").map((char, index) =>
+      char === "/" ? (
+        <span key={index} className={styles.slash}>
+          {char}
+        </span>
+      ) : (
+        <TimeBox key={index} value={char} />
+      )
+    )}
   </div>
 );
+
 
 export const TimeBox: React.FC<{ value: string }> = ({ value }) => (
   <div className={styles.timeBox}>{value}</div>

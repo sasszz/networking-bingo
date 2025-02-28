@@ -1,53 +1,58 @@
-import { useState, useEffect } from 'react';
-import styles from './BingoGameCreationForm.module.scss';
-import { MiniBingoCard } from '../MiniBingoCard';
-import { Button } from '../Button';
-import { GameDetails, BingoType } from '@/types';
+"use client";
 
-type BingoGameCreationFormProps = {
-  onNext: (gamedetails: GameDetails) => void;
-};
+import { useState } from "react";
+import { useGame } from "@/lib/contexts/GameContext";
+import styles from "./BingoGameCreationForm.module.scss";
+import { MiniBingoCard } from "../MiniBingoCard";
+import { Game } from "@/lib/types/database";
 
 export const BingoGameCreationForm = ({
   onNext,
-}: BingoGameCreationFormProps) => {
-  const [gameType, setGameType] = useState<BingoType>('one-line');
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
-  const [duration, setDuration] = useState<string>('180');
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-
-  useEffect(() => {
-    const now = new Date();
-    now.setMinutes(0, 0, 0);
-    now.setHours(now.getHours() + 1);
-
-    const formattedStartTime = formatDateTimeLocal(now);
-    setStartTime(formattedStartTime);
-
-    const defaultEndTime = new Date(now.getTime() + 180 * 60000);
-    setEndTime(formatDateTimeLocal(defaultEndTime));
-  }, []);
+}: {
+  onNext: (gameDetails: Partial<Game>) => void;
+}) => {
+  const { gameData, setGameData } = useGame();
+  console.log({ gameData });
 
   const formatDateTimeLocal = (date: Date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      '0'
-    )}-${String(date.getDate()).padStart(2, '0')}T${String(
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}T${String(
       date.getHours()
-    ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
   };
+
+  const [gameType, setGameType] = useState(gameData.winningType || "one-line");
+  const [startTime, setStartTime] = useState<string>(
+    gameData.startTime
+      ? formatDateTimeLocal(new Date(gameData.startTime))
+      : formatDateTimeLocal(new Date())
+  );
+  const [endTime, setEndTime] = useState<string>(
+    gameData.endTime ? formatDateTimeLocal(new Date(gameData.endTime)) : ""
+  );
+
+  const [duration, setDuration] = useState<string>(
+    String(gameData.duration || 180)
+  );
+
+  const [gameName, setGameName] = useState(gameData.gameName || "");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const minutes = parseInt(e.target.value, 10);
     setDuration(e.target.value);
+    setGameData((prev) => ({ ...prev, duration: minutes }));
 
     if (startTime) {
       const startDate = new Date(startTime);
       const endDate = new Date(startDate.getTime() + minutes * 60000);
       setEndTime(formatDateTimeLocal(endDate));
+      setGameData((prev) => ({ ...prev, endTime: endDate }));
     } else {
-      setEndTime('');
+      setEndTime("");
+      setGameData((prev) => ({ ...prev, endTime: undefined }));
     }
   };
 
@@ -55,13 +60,16 @@ export const BingoGameCreationForm = ({
     e.preventDefault();
     setIsSubmitted(true);
 
-    const gameDetails = {
-      gameType,
-      startTime,
-      endTime,
-      duration,
+    const gameDetails: Partial<Game> = {
+      gameName,
+      winningType: gameType as Game["winningType"],
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+      duration: parseInt(duration, 10),
+      gameCode: gameData.gameCode,
     };
 
+    setGameData((prev) => ({ ...prev, ...gameDetails }));
     onNext(gameDetails);
   };
 
@@ -74,16 +82,28 @@ export const BingoGameCreationForm = ({
           <input
             className={styles.input}
             type="text"
+            value={gameName}
+            onChange={(e) => {
+              setGameName(e.target.value);
+              setGameData((prev) => ({ ...prev, gameName: e.target.value }));
+            }}
             placeholder="Enter a name..."
             disabled={isSubmitted}
           />
         </label>
+
         <label className={styles.label}>
           Game Winning Type
           <select
             className={styles.input}
             value={gameType}
-            onChange={(e) => setGameType(e.target.value as BingoType)}
+            onChange={(e) => {
+              setGameType(e.target.value as Game["winningType"]);
+              setGameData((prev) => ({
+                ...prev,
+                winningType: e.target.value as Game["winningType"],
+              }));
+            }}
             disabled={isSubmitted}
           >
             <option value="one-line">One line</option>
@@ -102,12 +122,15 @@ export const BingoGameCreationForm = ({
             value={startTime}
             onChange={(e) => {
               setStartTime(e.target.value);
+              const localDate = new Date(e.target.value);
+              setGameData((prev) => ({ ...prev, startTime: localDate }));
+
               if (duration) {
-                const startDate = new Date(e.target.value);
                 const endDate = new Date(
-                  startDate.getTime() + parseInt(duration, 10) * 60000
+                  localDate.getTime() + parseInt(duration, 10) * 60000
                 );
                 setEndTime(formatDateTimeLocal(endDate));
+                setGameData((prev) => ({ ...prev, endTime: endDate }));
               }
             }}
             disabled={isSubmitted}
@@ -135,13 +158,13 @@ export const BingoGameCreationForm = ({
 
         {endTime && (
           <p className="text-sm text-gray-600">
-            Game will end at:{' '}
+            Game will end at:{" "}
             <strong>{new Date(endTime).toLocaleString()}</strong>
           </p>
         )}
-        <div className="self-end pt-4">
-          <Button buttonText="Next" type="submit" />
-        </div>
+        <p className="pt-12">
+          Game Code: {gameData.gameCode || "Generating..."}
+        </p>
       </form>
     </div>
   );

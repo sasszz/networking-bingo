@@ -1,11 +1,13 @@
 .main {
-  @apply w-fit
-    px-12
-    pt-12
+  @apply w-full
     flex
     gap-8
     flex-col
-    text-center;
+    text-center
+    items-center
+    justify-center
+    pt-12
+    pb-24;
 }
 
 .form {

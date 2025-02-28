@@ -5,10 +5,14 @@ import styles from "./IconButton.module.scss";
 export enum SvgIcons {
   Share = "/share.svg",
   LinkedIn = "/linkedin.svg",
+  Die = "/die.svg",
   Next = "/next.svg",
   Copy = "/copy.svg",
   Close = "/close.svg",
   Up = "/up.svg",
+  Edit = "/edit.svg",
+  Lock = "/lock.svg",
+  Unlock = "/unlock.svg",
 }
 
 interface IconButtonProps {
@@ -19,6 +23,8 @@ interface IconButtonProps {
   disabled?: boolean;
   text?: string;
   buttonOnly?: boolean;
+  className?: string;
+  type?: "button" | "submit" | "reset";
 }
 export const IconButton = ({
   icon,
@@ -28,6 +34,8 @@ export const IconButton = ({
   disabled,
   text,
   buttonOnly,
+  className,
+  type,
 }: IconButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const handlePress = () => setIsPressed(true);
@@ -36,7 +44,8 @@ export const IconButton = ({
   return (
     <>
       <button
-        className={disabled ? styles.disabled : ""}
+        type={type ? type : "button"}
+        className={`${disabled ? styles.disabled : ""} ${className || ""}`}
         onClick={onClick}
         disabled={disabled}
         onMouseDown={handlePress}
