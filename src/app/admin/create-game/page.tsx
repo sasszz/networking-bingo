@@ -134,11 +134,11 @@ function GameContent(): JSX.Element {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow w-full max-w-lg mx-auto overflow-y-auto pt-24">
+      <main className="flex-grow w-full mx-auto overflow-y-auto pt-24">
         {step === 1 && <BingoGameCreationForm onNext={handleGameCreation} />}
         {step === 2 && <BingoCardCreationForm onSubmit={handleCardCreation} />}
         {step === 3 && (
-          <div className="flex flex-col items-start justify-start gap-12 text-center">
+          <div className="flex flex-col items-start justify-start md:items-center md:justify-center md:w-screen gap-12 text-center">
             <GameDisplay />
           </div>
         )}

@@ -1,8 +1,4 @@
-import {
-  collection,
-  addDoc,
-  Timestamp
-} from "firebase/firestore";
+import { collection, addDoc, Timestamp, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "@/lib/firebase/config";
 import { Game } from "@/lib/types/database";
@@ -15,7 +11,9 @@ export async function addBingoGame({
   players = [],
   winningType,
   prompts,
-}: Omit<Game, "status" | "createdAt" | "gameId" | "adminId"> & { prompts: string[] }) {
+}: Omit<Game, "status" | "createdAt" | "gameId" | "adminId"> & {
+  prompts: string[];
+}) {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -58,5 +56,36 @@ export async function addBingoGame({
   } catch (error) {
     console.error("Error adding bingo game:", error);
     throw new Error("Failed to create bingo game");
+  }
+}
+
+export async function getUserBingoGames(): Promise<Game[]> {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      throw new Error("User is not authenticated");
+    }
+
+    const userId = user.uid;
+
+    // Query Firestore for games where the user is the admin
+    const gamesQuery = query(
+      collection(db, "bingoGames"),
+      where("adminId", "==", userId)
+    );
+
+    const querySnapshot = await getDocs(gamesQuery);
+
+    const games: Game[] = querySnapshot.docs.map((doc) => ({
+      gameId: doc.id,
+      ...doc.data(),
+    })) as Game[];
+
+    return games;
+  } catch (error) {
+    console.error("Error fetching user's bingo games:", error);
+    throw new Error("Failed to fetch bingo games");
   }
 }
